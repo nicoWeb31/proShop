@@ -1,6 +1,14 @@
-const express = require('express');
-const products = require('./data/products');
+// const express = require('express');
+// const products = require('./data/products');
+// const dotenv = require('dotenv');
+import express from 'express';
 const app = express();
+import products from './data/products.js'
+import dotenv from 'dotenv';
+
+
+
+dotenv.config();
 
 
 app.get('/', (req, res) => {
@@ -15,6 +23,8 @@ app.get('/api/product/:id', (req, res) => {
     res.status(200).json({product})
 })
 
-app.listen(3005, (err) => {
-    console.log('server run well on port 3005.... 🙋 ');
+const PORT = process.env.PORT || 3005
+
+app.listen(PORT, (err) => {
+    console.log(`server running well in ${process.env.NODE_ENV} on port ${PORT}... 🙂  `);
 })

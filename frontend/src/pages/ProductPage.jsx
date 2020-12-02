@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
 import {
     Row,
@@ -10,14 +11,21 @@ import {
     ListGroupItem,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
-import Products from '../products';
 
-const productPage = ({ match }) => {
-    const product = Products.find((product) => product._id === match.params.id);
-    console.log(
-        '🚀 ~ file: productPage.jsx ~ line 10 ~ productPage ~ product',
-        product
-    );
+const ProductPage = ({ match }) => {
+
+    const [product, setProduct] = useState({});
+
+    useEffect(() => {
+        const fetchProduct = async (id) => {
+            const { data } = await axios.get(`/api/product/${id}`);
+            console.log("🚀 ~ file: ProductPage.jsx ~ line 22 ~ fetchProduct ~ data", data)
+            setProduct(data.product);
+        };
+        console.log("🚀 ~ file: ProductPage.jsx ~ line 26 ~ useEffect ~ match.params.id", match.params.id)
+
+        fetchProduct(match.params.id)
+    }, [match]);
 
     return (
         <>
@@ -67,7 +75,11 @@ const productPage = ({ match }) => {
                                 </Row>
                             </ListGroupItem>
                             <ListGroupItem>
-                                <Button className="btn-block" type="button" disabled={product.countInStock <= 0}>
+                                <Button
+                                    className="btn-block"
+                                    type="button"
+                                    disabled={product.countInStock <= 0}
+                                >
                                     Add To Cart
                                 </Button>
                             </ListGroupItem>
@@ -79,4 +91,4 @@ const productPage = ({ match }) => {
     );
 };
 
-export default productPage;
+export default ProductPage;

@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 
 import Header from './components/Header';
 import HomePage from './pages/HomePage';
-import ProductsPage from './pages/productPage'
+import ProductsPage from './pages/ProductPage'
 
 function App() {
     return (

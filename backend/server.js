@@ -8,7 +8,8 @@ import totoBDD from './config/db.js';
 import morgan from 'morgan';
 import colors from 'colors';
 
-import productRoute from './routes/productRoute.js' 
+import productRoute from './routes/productRoute.js';
+import errMidlleware from './middleware/errMidlleware.js';
 
 
 
@@ -29,6 +30,12 @@ app.get('/', (req, res) => {
 })
 
 app.use("/api/products",productRoute)
+//404
+app.use(errMidlleware.notFound)
+
+
+//_____________________Err midlleware_____________________________________
+app.use(errMidlleware.errorHandler)
 
 
 

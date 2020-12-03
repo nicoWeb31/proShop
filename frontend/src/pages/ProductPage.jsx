@@ -18,7 +18,7 @@ const ProductPage = ({ match }) => {
 
     useEffect(() => {
         const fetchProduct = async (id) => {
-            const { data } = await axios.get(`/api/product/${id}`);
+            const { data } = await axios.get(`/api/products/${id}`);
             console.log("🚀 ~ file: ProductPage.jsx ~ line 22 ~ fetchProduct ~ data", data)
             setProduct(data.product);
         };

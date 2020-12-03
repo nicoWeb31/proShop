@@ -2,15 +2,15 @@ import mongoose from 'mongoose';
 
 const reviewShema = mongoose.Schema({
     name: {
-        type: string,
+        type: String,
         required: [true, 'name is required !!!!'],
     },
     rating: {
-        type: number,
+        type: Number,
         required: [true, 'rating is required !!!!'],
     },
     comment: {
-        type: string,
+        type: String,
         required: [true, 'comment is required !!!!'],
     },
 },

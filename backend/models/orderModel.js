@@ -14,7 +14,7 @@ const orderShema = mongoose.Schema(
                 image: { type: String, required: true },
                 price: { type: Number, required: true },
                 product: {
-                    type: mongoose.schema.Types.ObjectId,
+                    type: mongoose.Schema.Types.ObjectId,
                     ref: 'Product',
                     required: true,
                 },
@@ -73,6 +73,6 @@ const orderShema = mongoose.Schema(
     }
 );
 
-const Order = mongoose.Model('Order', orderShema);
+const Order = mongoose.model('Order',orderShema);
 
 export default Order;

@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import Review from './reviewModel.js'
+
 
 
 const productShema = mongoose.Schema(
@@ -10,42 +10,45 @@ const productShema = mongoose.Schema(
             required: true,
         },
         name: {
-            type: 'string',
+            type: String,
             require: [true, 'Name is required !!!!'],
         },
         image: {
-            type: 'string',
+            type: String,
             require: [true, 'Image is required !!!'],
         },
         brand: {
-            type: 'string',
+            type: String,
             require: [true, 'Brand is required !!!'],
         },
         category: {
-            type: string,
+            type: String,
             require: [true, 'category is required !!!'],
         },
         description: {
-            type: string,
+            type: String,
             require: [true, 'description is required !!!'],
         },
-        reviews: [Review],
+        reviews: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
+        }],
         rating: {
-            type: number,
+            type: Number,
             require: [true, 'rating is required !!!'],
             default: 0,
         },
         numReviews: {
-            type: number,
+            type: Number,
             require: [true, 'numRiviews is required !!!'],
             default: 0,
         },
         price: {
-            type: number,
+            type: Number,
             require: [true, 'price is required !!!'],
         },
         countInStock: {
-            type: number,
+            type: Number,
             require: [true, 'countInStock is required !!!'],
             default: 0,
         },

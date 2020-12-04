@@ -18,7 +18,7 @@ import Rating from '../components/Rating';
 
 //______________________________________________________________
 const ProductPage = ({ match, history }) => {
-    const [qty, setQty] = useState(0);
+    const [qty, setQty] = useState(1);
     const dispatch = useDispatch();
     const { error, product, loading } = useSelector(
         (state) => state.productDetails
@@ -98,7 +98,7 @@ const ProductPage = ({ match, history }) => {
                                                 <Form.Control
                                                     as="select"
                                                     value={qty}
-                                                    onchange={(e) =>
+                                                    onChange={(e) =>
                                                         setQty(e.target.value)
                                                     }
                                                 >
@@ -106,17 +106,14 @@ const ProductPage = ({ match, history }) => {
                                                         ...Array(
                                                             product.countInStock
                                                         ).keys(),
-                                                    ].map((x) => {
-                                                        return (
-                                                            <option
-                                                                key={x + 1}
-                                                                value={x + 1}
-                                                            >
-                                                                {' '}
-                                                                {x + 1}
-                                                            </option>
-                                                        );
-                                                    })}
+                                                    ].map((x) => (
+                                                        <option
+                                                            key={x + 1}
+                                                            value={x + 1}
+                                                        >
+                                                            {x + 1}
+                                                        </option>
+                                                    ))}
                                                 </Form.Control>
                                             </Col>
                                         </Row>

@@ -24,7 +24,7 @@ const HomePage = () => {
             {loading ? (
                 <Loader />
             ) : error ? (
-                <Message><Message variant='danger' />
+                <Message variant='danger' >
                 {error}
                 </Message>
             ) : (

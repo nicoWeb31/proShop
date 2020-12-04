@@ -1,30 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Col, Row } from 'react-bootstrap';
 import Product from '../components/Product';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { listPoducts } from '../actions/productsAction.js';
 
 const HomePage = () => {
-    const [products, setProducts] = useState([]);
+    //methode sans connect
+    const dispatch = useDispatch();
+    const { loading, error, products } = useSelector(
+        (state) => state.productList
+    );
 
     useEffect(() => {
-        const fetchProducts = async () => {
-            const { data } = await axios.get('/api/products');
-            console.log("🚀 ~ file: HomePage.jsx ~ line 12 ~ fetchProducts ~ data", data)
-            setProducts(data.products);
-        };
-        fetchProducts();
-    },[]);
+        dispatch(listPoducts());
+    }, [dispatch]);
 
     return (
         <>
             <h1>Latest products</h1>
-            <Row>
-                {products.map((prod) => (
-                    <Col sm={12} md={6} lg={4} xl={3} key={prod._id}>
-                        <Product product={prod} />
-                    </Col>
-                ))}
-            </Row>
+            {/* spinner */}
+            {loading ? (
+                <h2>Loading...</h2>
+            ) : error ? (
+                <h3>{error}</h3>
+            ) : (
+                <Row>
+                    {products &&
+                        products.map((prod) => (
+                            <Col sm={12} md={6} lg={4} xl={3} key={prod._id}>
+                                <Product product={prod} />
+                            </Col>
+                        ))}
+                </Row>
+            )}
         </>
     );
 };

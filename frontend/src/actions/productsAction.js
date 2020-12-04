@@ -37,7 +37,6 @@ export const productsDetails = (id) => async (dispatch) => {
         //on dispatch la request pour le loading par exemple
         dispatch({ type: PRODUCT_DETAILS_REQUEST });
         const { data } = await axios.get(`/api/products/${id}`);
-        console.log("🚀 ~ file: productsAction.js ~ line 46 ~ productsDetails ~ data", data)
 
         //on dispatch les datas.. stop loading and display the data
         dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data.product });

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { productsDetails } from '../actions/productsAction';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
@@ -12,10 +12,13 @@ import {
     Card,
     Button,
     ListGroupItem,
+    Form,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 
-const ProductPage = ({ match }) => {
+//______________________________________________________________
+const ProductPage = ({ match, history }) => {
+    const [qty, setQty] = useState(0);
     const dispatch = useDispatch();
     const { error, product, loading } = useSelector(
         (state) => state.productDetails
@@ -23,7 +26,14 @@ const ProductPage = ({ match }) => {
 
     useEffect(() => {
         dispatch(productsDetails(match.params.id));
-    }, []);
+    }, [dispatch, match]);
+
+    //______________________________function_____________________________
+
+    const addToCartHandler = () => {
+        //link vers card param id item and qty
+        history.push(`/cart/${match.params.id}?qty=${qty}`);
+    };
 
     return (
         <>
@@ -33,9 +43,7 @@ const ProductPage = ({ match }) => {
             {loading ? (
                 <Loader />
             ) : error ? (
-                <Message variant='danger'>
-                    {error}
-                </Message>
+                <Message variant="danger">{error}</Message>
             ) : (
                 <Row>
                     <Col md={6}>
@@ -81,8 +89,43 @@ const ProductPage = ({ match }) => {
                                         </Col>
                                     </Row>
                                 </ListGroupItem>
+
+                                {product.countInStock > 0 && (
+                                    <ListGroupItem>
+                                        <Row>
+                                            <Col>Qty:</Col>
+                                            <Col>
+                                                <Form.Control
+                                                    as="select"
+                                                    value={qty}
+                                                    onchange={(e) =>
+                                                        setQty(e.target.value)
+                                                    }
+                                                >
+                                                    {[
+                                                        ...Array(
+                                                            product.countInStock
+                                                        ).keys(),
+                                                    ].map((x) => {
+                                                        return (
+                                                            <option
+                                                                key={x + 1}
+                                                                value={x + 1}
+                                                            >
+                                                                {' '}
+                                                                {x + 1}
+                                                            </option>
+                                                        );
+                                                    })}
+                                                </Form.Control>
+                                            </Col>
+                                        </Row>
+                                    </ListGroupItem>
+                                )}
+
                                 <ListGroupItem>
                                     <Button
+                                        onClick={addToCartHandler}
                                         className="btn-block"
                                         type="button"
                                         disabled={product.countInStock <= 0}

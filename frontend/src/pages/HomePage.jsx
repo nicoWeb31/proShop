@@ -3,6 +3,8 @@ import { Col, Row } from 'react-bootstrap';
 import Product from '../components/Product';
 import { useDispatch, useSelector } from 'react-redux';
 import { listPoducts } from '../actions/productsAction.js';
+import Loader from '../components/Loader';
+import Message from '../components/Message'
 
 const HomePage = () => {
     //methode sans connect
@@ -20,9 +22,11 @@ const HomePage = () => {
             <h1>Latest products</h1>
             {/* spinner */}
             {loading ? (
-                <h2>Loading...</h2>
+                <Loader />
             ) : error ? (
-                <h3>{error}</h3>
+                <Message><Message variant='danger' />
+                {error}
+                </Message>
             ) : (
                 <Row>
                     {products &&

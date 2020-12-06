@@ -5,6 +5,10 @@ const test = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'ok' });
 });
 
+
+//@desc Fetch all products
+//@route Get /api/products
+//@access Public
 //_____________________fetch All Products_____________________________________
 const fetchAllPoducts = asyncHandler(async (req, res) => {
     const products = await Product.find({});
@@ -15,6 +19,10 @@ const fetchAllPoducts = asyncHandler(async (req, res) => {
     });
 });
 
+
+//@desc Fetch single product
+//@route Get /api/produccts/id
+//@access Public
 //_____________________fetch by ID_______________________________________________
 const fetchOneProduct = asyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
@@ -30,7 +38,7 @@ const fetchOneProduct = asyncHandler(async (req, res) => {
     }
 });
 
-export default {
+export {
     fetchOneProduct,
     fetchAllPoducts,
     test,

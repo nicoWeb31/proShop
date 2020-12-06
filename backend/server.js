@@ -9,6 +9,7 @@ import morgan from 'morgan';
 import colors from 'colors';
 
 import productRoute from './routes/productRoute.js';
+import usersRoute from './routes/usersRoute.js';
 import errMidlleware from './middleware/errMidlleware.js';
 
 
@@ -22,14 +23,19 @@ totoBDD();
 if (process.env.NODE_ENV !== "production") {
     app.use(morgan("dev"));
 }
+//parser
+app.use(express.json())
 
 
 //_____________________ROUTE_____________________________________
 app.get('/', (req, res) => {
     res.send('API is running... :)');
 })
-
+//propducts
 app.use("/api/products",productRoute)
+//users
+app.use("/api/users", usersRoute)
+
 //404
 app.use(errMidlleware.notFound)
 

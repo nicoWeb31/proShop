@@ -1,5 +1,5 @@
 import express from 'express';
-import productController from '../controllers/productController.js';
+import {fetchAllPoducts,fetchOneProduct} from '../controllers/productController.js';
 
 const router = express.Router();
 
@@ -7,11 +7,11 @@ const router = express.Router();
 //@route Get /api/products
 //@access Public
 router.route('/')
-    .get(productController.fetchAllPoducts);
+    .get(fetchAllPoducts);
 
 //@desc Fetch single product
 //@route Get /api/produccts/id
 //@access Public
-router.get('/:id', productController.fetchOneProduct);
+router.get('/:id',fetchOneProduct);
 
 export default router;

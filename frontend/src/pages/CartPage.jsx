@@ -36,6 +36,12 @@ const CartPage = ({ match, location, history }) => {
         //:TODO: implement
     };
 
+    const checkoutHandler =()=>{
+        //TODO: implement
+        console.log('check out !!')
+        history.push('/login?redirect=shipping')
+    }
+
     //_______________________render_______________________________________
     return (
         <Row>
@@ -114,7 +120,15 @@ const CartPage = ({ match, location, history }) => {
             <Col md={4}>
                 <Card>
                     <ListGroup variant='flush'>
-
+                        <ListGroup.Item>
+                            <h2>Subtotal ({cartItems.reduce((acc,current)=> acc + current.qty,0)}) items</h2>
+                            ${cartItems.reduce((acc,current)=> acc + current.qty * current.price,0).toFixed(2)} $
+                        </ListGroup.Item>
+                        <ListGroup.Item>
+                            <Button type='button' className='btn-block' disabled= {cartItems.length === 0} onClick={checkoutHandler} >
+                                Proced to checkout
+                            </Button>
+                        </ListGroup.Item>
                     </ListGroup>
                 </Card>
             </Col>

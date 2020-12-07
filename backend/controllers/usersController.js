@@ -16,11 +16,14 @@ const authUser = asyncHandler(async (req, res) => {
     //user exist ?
     if (user && (await user.matchPass(password))) {
         res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            isAdmin: user.isAdmin,
-            token: token,
+            status: 'success',
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                isAdmin: user.isAdmin,
+                token: token,
+            },
         });
     } else {
         res.status(401);
@@ -55,34 +58,32 @@ const profileUser = asyncHandler(async (req, res) => {
 //@route POST /api/users
 //@access Public
 //_________________________create new user___________________________________________
-const createUser = asyncHandler(async(req, res,next) => {
-    const {name,email,password} = req.body;
+const createUser = asyncHandler(async (req, res, next) => {
+    const { name, email, password } = req.body;
 
-    const userExist = await User.findOne({email});
+    const userExist = await User.findOne({ email });
 
-    if(userExist){
-        res.status(400)
+    if (userExist) {
+        res.status(400);
         throw new Error('Email already in use !!!');
     }
 
-    const user = await User.create({name,email,password});
+    const user = await User.create({ name, email, password });
 
-    if(user){
+    if (user) {
         res.status(201).json({
             status: 'success',
-            user:{
+            user: {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                isAdmin: user.isAdmin
-            }
-        })
-    }else{
-        res.status(400)
-        throw new Error('Invalid user data !')
+                isAdmin: user.isAdmin,
+            },
+        });
+    } else {
+        res.status(400);
+        throw new Error('Invalid user data !');
     }
+});
 
-})
-
-
-export { authUser, profileUser,createUser };
+export { authUser, profileUser, createUser };

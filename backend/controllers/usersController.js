@@ -66,6 +66,11 @@ const createUser = asyncHandler(async (req, res, next) => {
 
     const userExist = await User.findOne({ email });
 
+    // if(!name || !email || !password) {
+    //     return res.status(400)
+    //     throw new Error('name email and  password is required !!!');
+    // }
+
     if (userExist) {
         res.status(400);
         throw new Error('Email already in use !!!');

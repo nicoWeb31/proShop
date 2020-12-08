@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 //component
-import Mesage from '../components/Message';
+import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 //action
@@ -20,6 +20,7 @@ const LoginPage = ({ location, history }) => {
     const { loading, error, userInfo } = userLogin;
 
     const redirect = location.search ? location.search.split('=')[1] : '/';
+    console.log("🚀 ~ file: LoginPage.jsx ~ line 23 ~ LoginPage ~ redirect", redirect)
 
     useEffect(() => {
         if (userInfo) {
@@ -37,7 +38,7 @@ const LoginPage = ({ location, history }) => {
     return (
         <FormContainer>
             <h1>Sign In</h1>
-            {error && <Mesage variant="danger"> {error}</Mesage>}
+            {error && <Message variant="danger"> {error}</Message>}
             {loading && <Loader></Loader>} 
             <Form onSubmit={submitHandler}>
                 <Form.Group controlId="email">
@@ -68,9 +69,7 @@ const LoginPage = ({ location, history }) => {
             <Row className="py-3">
                 New Customer?{' '}
                 <Link
-                    to={
-                        redirect
-                            ? `/redirect?redirect=${redirect}`
+                    to={ redirect ? `register?redirect=${redirect}`
                             : '/register'
                     }
                 >

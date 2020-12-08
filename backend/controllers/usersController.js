@@ -10,11 +10,13 @@ const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
+    console.log("🚀 ~ file: usersController.js ~ line 13 ~ authUser ~ user", user)
 
-    const token = await generateToken(user._id);
+    let token 
 
     //user exist ?
     if (user && (await user.matchPass(password))) {
+        token = await generateToken(user._id);
         res.json({
             status: 'success',
             user: {
@@ -37,6 +39,7 @@ const authUser = asyncHandler(async (req, res) => {
 //_____________________profile user___________________________________________
 const profileUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
+
 
     if (user) {
         res.status(200).json({

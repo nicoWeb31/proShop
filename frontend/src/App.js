@@ -8,6 +8,7 @@ import Header from './components/Header';
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductPage';
 import CartPage from './pages/CartPage';
+import LoginPage from './pages/LoginPage';
 
 function App() {
     return (
@@ -18,6 +19,8 @@ function App() {
                 <Container>
                     <Route  exact path="/" component={HomePage} />
                     <Route path="/product/:id" component={ProductsPage} />
+                    <Route path="/login" component={LoginPage} />
+
                     {/* ? optionnel */}
                     <Route path="/cart/:id?" component={CartPage} />
                 </Container>

@@ -20,24 +20,18 @@ const protect = asyncHandler(async (req, res, next) => {
 
             //add user in req object !!! access user in all preocted route
             req.user = await User.findById(decoded.id).select('-password');
-            console.log(
-                '🚀 ~ file: authMiddlware.js ~ line 23 ~ protect ~ req.user',
-                req.user
-            );
             next();
         } catch (error) {
             console.error(error);
             res.status(401);
             throw new Error('Not authorization, token faild !!! ');
-
         }
     }
 
     if (!token) {
-        res.statusCode(401);
+        res.status(401);
         throw new Error('Not Authorized, no toren !!');
     }
-
 });
 
 export { protect };

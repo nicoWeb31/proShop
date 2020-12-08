@@ -10,9 +10,12 @@ const authUser = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-    console.log("🚀 ~ file: usersController.js ~ line 13 ~ authUser ~ user", user)
+    console.log(
+        '🚀 ~ file: usersController.js ~ line 13 ~ authUser ~ user',
+        user
+    );
 
-    let token 
+    let token;
 
     //user exist ?
     if (user && (await user.matchPass(password))) {
@@ -39,7 +42,6 @@ const authUser = asyncHandler(async (req, res) => {
 //_____________________profile user___________________________________________
 const profileUser = asyncHandler(async (req, res) => {
     const user = await User.findById(req.user._id);
-
 
     if (user) {
         res.status(200).json({
@@ -94,4 +96,35 @@ const createUser = asyncHandler(async (req, res, next) => {
     }
 });
 
-export { authUser, profileUser, createUser };
+//@desc update profile user
+//@route put /api/users/profile
+//@access Prive
+//_____________________profile user___________________________________________
+const UpdateProfileUser = asyncHandler(async (req, res) => {
+    const user = await User.findById(req.user._id);
+
+    if (user) {
+        user.name = req.body.name || user.name;
+        user.email = req.body.email || user.email;
+        if (req.body.password) {
+            user.password = req.body.password;
+        }
+
+        const UpdateProfileUser = await user.save();
+
+        res.status(200).json({
+            status: 'success',
+            user: {
+                _id: UpdateProfileUser._id,
+                name: UpdateProfileUser.name,
+                email: UpdateProfileUser.email,
+                isAdmin: UpdateProfileUser.isAdmin,
+            },
+        });
+    } else {
+        res.status(404);
+        throw new Error('User not found');
+    }
+});
+
+export { authUser, profileUser, createUser, UpdateProfileUser };

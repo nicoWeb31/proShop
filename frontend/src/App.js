@@ -12,6 +12,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
 import ShippingPage from './pages/ShippingPage';
+import PaymentPage from './pages/PaymentPage';
 
 function App() {
     return (
@@ -20,15 +21,14 @@ function App() {
 
             <main className="py-3">
                 <Container>
-                    <Route  exact path="/" component={HomePage} />
+                    <Route exact path="/" component={HomePage} />
                     <Route path="/product/:id" component={ProductsPage} />
                     <Route path="/shipping" component={ShippingPage} />
+                    <Route path="/payment" component={PaymentPage} />
 
                     <Route path="/login" component={LoginPage} />
                     <Route path="/register" component={RegisterPage} />
                     <Route path="/profile" component={ProfilePage} />
-
-
 
                     {/* ? optionnel */}
                     <Route path="/cart/:id?" component={CartPage} />

@@ -6,6 +6,7 @@ import Order from '../models/orderModel.js';
 //@access Privé
 //_____________________create an order_____________________________________
 const createNewOrder = asyncHandler(async (req, res) => {
+    console.log('route create order')
     const {
         orderItems,
         shippingAdress,

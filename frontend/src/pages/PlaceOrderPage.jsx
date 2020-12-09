@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,8 +6,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import Message from '../components/Message';
 import CheckoutSteps from '../components/CheckoutSteps';
 //action
+import { createOrder } from '../actions/orderAction';
 
-const PlaceOrderPage = () => {
+const PlaceOrderPage = ({history}) => {
     const dispatch = useDispatch();
 
     const cart = useSelector((state) => state.cart);
@@ -16,20 +17,45 @@ const PlaceOrderPage = () => {
     );
 
     //calculate price:
-
     const addDecimal = (num) => {
         return Math.round((num * 100) / 100).toFixed(2);
     };
 
-    cart.itemsPrice = cart.cartItems.reduce((acc, e) => acc + e.price * e.qty, 0).toFixed(2);
+    cart.itemsPrice = cart.cartItems
+        .reduce((acc, e) => acc + e.price * e.qty, 0)
+        .toFixed(2);
     cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 48;
 
     cart.taxePrice = addDecimal(Number((0.15 * cart.itemsPrice).toFixed(2)));
 
-    cart.totalPrice = cart.itemsPrice * 1 + cart.taxePrice*1 + cart.shippingPrice*1;
+    cart.totalPrice =
+        cart.itemsPrice * 1 + cart.taxePrice * 1 + cart.shippingPrice * 1;
+
+    const orderCreate = useSelector((state) => state.orderCreate);
+    console.log("🚀 ~ file: PlaceOrderPage.jsx ~ line 35 ~ PlaceOrderPage ~ orderCreate", orderCreate)
+    const { order, success, error} = orderCreate;
+
+    useEffect(()=>{
+        if(success){
+            history.push(`order/${order._id}`)
+        }
+        //eslint-disable-next-line
+    },[history,success])
 
     //______________fonction____________________
-    const placeorderHandler = () => {};
+    const placeorderHandler = () => {
+        dispatch(
+            createOrder({
+                orderItems: cart.cartItems,
+                shippingAdress: cart.shippingAdress,
+                paymentMethod: cart.paymentMethod,
+                itemsPrice: cart.itemsPrice,
+                shippingPrice: cart.shippingPrice,
+                taxePrice: cart.taxePrice,
+                totalPrice: cart.totalPrice,
+            })
+        );
+    };
 
     return (
         <>
@@ -81,7 +107,9 @@ const PlaceOrderPage = () => {
                                                 </Col>
                                                 <Col md={4}>
                                                     {item.qty} x ${item.price} ={' '}
-                                                    {(item.qty * item.price).toFixed(2)}
+                                                    {(
+                                                        item.qty * item.price
+                                                    ).toFixed(2)}
                                                 </Col>
                                             </Row>
                                         </ListGroup.Item>
@@ -120,6 +148,9 @@ const PlaceOrderPage = () => {
                                     <Col>Total</Col>
                                     <Col>${cart.totalPrice}</Col>
                                 </Row>
+                            </ListGroup.Item>
+                            <ListGroup.Item>
+                                {error && <Message variant='danger' >{error}</Message>}
                             </ListGroup.Item>
                             <ListGroup.Item>
                                 <Button

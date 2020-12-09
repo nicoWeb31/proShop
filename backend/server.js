@@ -37,7 +37,7 @@ app.use("/api/products",productRoute)
 //users
 app.use("/api/users", usersRoute)
 //order
-app.use('api/orders', orderRoute)
+app.use('/api/orders', orderRoute)
 
 //404
 app.use(errMidlleware.notFound)

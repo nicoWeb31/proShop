@@ -14,6 +14,7 @@ import {
     userDetailReducer,
     userUpdateProfileReducer,
 } from './reducers/usersReducers';
+import { orderCreateReducer } from './reducers/orderReducers'
 
 const reducer = combineReducers({
     productList: productListReducer,
@@ -23,6 +24,7 @@ const reducer = combineReducers({
     userRegister: userRegisterReducer,
     userDetail: userDetailReducer,
     userUpdateProfile: userUpdateProfileReducer,
+    orderCreate: orderCreateReducer
 });
 
 //storage state initial with data in storage

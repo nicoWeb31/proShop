@@ -10,6 +10,7 @@ import colors from 'colors';
 
 import productRoute from './routes/productRoute.js';
 import usersRoute from './routes/usersRoute.js';
+import orderRoute from './routes/orderRoutes.js'
 import errMidlleware from './middleware/errMidlleware.js';
 
 
@@ -35,6 +36,8 @@ app.get('/', (req, res) => {
 app.use("/api/products",productRoute)
 //users
 app.use("/api/users", usersRoute)
+//order
+app.use('api/order', orderRoute)
 
 //404
 app.use(errMidlleware.notFound)

@@ -24,9 +24,9 @@ const PlaceOrderPage = () => {
     cart.itemsPrice = cart.cartItems.reduce((acc, e) => acc + e.price * e.qty, 0).toFixed(2);
     cart.shippingPrice = cart.itemsPrice > 100 ? 0 : 48;
 
-    cart.itemsTaxe = addDecimal(Number((0.15 * cart.itemsPrice).toFixed(2)));
+    cart.taxePrice = addDecimal(Number((0.15 * cart.itemsPrice).toFixed(2)));
 
-    cart.totalPrice = cart.itemsPrice * 1 + cart.itemsTaxe*1 + cart.shippingPrice*1;
+    cart.totalPrice = cart.itemsPrice * 1 + cart.taxePrice*1 + cart.shippingPrice*1;
 
     //______________fonction____________________
     const placeorderHandler = () => {};
@@ -112,7 +112,7 @@ const PlaceOrderPage = () => {
                             <ListGroup.Item>
                                 <Row>
                                     <Col>Tax</Col>
-                                    <Col>${cart.itemsTaxe}</Col>
+                                    <Col>${cart.taxePrice}</Col>
                                 </Row>
                             </ListGroup.Item>
                             <ListGroup.Item>

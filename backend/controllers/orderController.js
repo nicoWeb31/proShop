@@ -94,7 +94,9 @@ const updateOrederToPaid = asyncHandler(async (req, res) => {
 //@access Privé
 //_____________________get my orders_____________________________________
 const getMyOwnOrders = asyncHandler(async (req, res) => {
-    const orders = await Order.find({user : req.user._id});
+
+    const orders = await Order.find({user : req.user.id});
+    console.log("🚀 ~ file: orderController.js ~ line 99 ~ getMyOwnOrders ~ d", orders)
 
     res.status(200).json({
         status: 'success',

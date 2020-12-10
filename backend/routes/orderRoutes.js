@@ -16,6 +16,13 @@ router
     .post(protect, createNewOrder);
 
 router
+    .route('/myorders')
+    //@desc get logged in user orders
+    //@route get /api/orders/myorders
+    //@access Privé
+    .get(protect, getMyOwnOrders);
+    
+router
     .route('/:id')
     //@desc get order by ID
     //@route GET /api/orders/:id
@@ -28,13 +35,5 @@ router
     //@route PUT /api/orders/:id/pay
     //@access Privé
     .put(protect, updateOrederToPaid);
-
-router
-    .route('/myorders')
-    //@desc get logged in user orders
-    //@route get /api/orders/myorders
-    //@access Privé
-    .get(protect, getMyOwnOrders);
-
 
 export default router;

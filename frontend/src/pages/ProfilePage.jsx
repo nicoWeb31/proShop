@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Table } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 //component
 import Message from '../components/Message';
@@ -7,6 +8,7 @@ import Loader from '../components/Loader';
 
 //action
 import { getUserDetails, updateUserProfile } from '../actions/userAction';
+import { ListOwnOrder } from '../actions/orderAction';
 
 const ProfilePage = ({ location, history }) => {
     const [email, setEmail] = useState('');
@@ -23,15 +25,19 @@ const ProfilePage = ({ location, history }) => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
-    const userUpdateProfile = useSelector((state)=>state.userUpdateProfile)
-    const {success} = userUpdateProfile;
-    
+    const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+    const { success } = userUpdateProfile;
+
+    const orderOwnList = useSelector((state) => state.orderOwnList);
+    const { loading: loadingOrder, error: errorOrder, orders } = orderOwnList;
+
     useEffect(() => {
         if (!userInfo) {
             history.push('/login');
         } else {
             if (!user.name) {
                 dispatch(getUserDetails('profile'));
+                dispatch(ListOwnOrder());
             } else {
                 setName(user.name);
                 setEmail(user.email);
@@ -57,8 +63,9 @@ const ProfilePage = ({ location, history }) => {
                 <h2>My profile !!</h2>
                 {error && <Message variant="danger"> {error}</Message>}
                 {message && <Message variant="danger"> {message}</Message>}
-                {success && <Message variant="success"> Profile updated !!</Message>}
-
+                {success && (
+                    <Message variant="success"> Profile updated !!</Message>
+                )}
 
                 {loading && <Loader></Loader>}
                 <Form onSubmit={submitHandler}>
@@ -108,6 +115,70 @@ const ProfilePage = ({ location, history }) => {
             </Col>
             <Col md={9}>
                 <h2>My orders</h2>
+                {loadingOrder ? (
+                    <Loader />
+                ) : errorOrder ? (
+                    <Message>{errorOrder}</Message>
+                ) : (
+                    <Table
+                        striped
+                        bordered
+                        hover
+                        responsive
+                        className="table-sm"
+                    >
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>DATE</th>
+                                <th>TOTAL</th>
+                                <th>PAID</th>
+                                <th>DELEVRED</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {orders.map((order) => (
+                                <tr key={order._id}>
+                                    <td>{order._id}</td>
+                                    <td>{order.createdAt && order.createdAt.substring(0, 10)}</td>
+
+                                    <td>{order.totalPrice}</td>
+                                    <td>
+                                        {order.isPaid ? (
+                                            order.paidAt.substring(0, 10)
+                                        ) : (
+                                            <i
+                                                className="fas fa-times"
+                                                style={{ color: 'red' }}
+                                            ></i>
+                                        )}
+                                    </td>
+                                    <td>
+                                        {order.isdelivered ? (
+                                            order.deliveredAt.substring(0, 10)
+                                        ) : (
+                                            <i
+                                                className="fas fa-times"
+                                                style={{ color: 'red' }}
+                                            ></i>
+                                        )}
+                                    </td>
+                                    <td>
+                                        <LinkContainer
+                                            to={`/order/${order._id}`}
+                                        >
+                                            <Button variant="light" className='btn-sm'>
+                                                {' '}
+                                                details
+                                            </Button>
+                                        </LinkContainer>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
+                )}
             </Col>
         </Row>
     );

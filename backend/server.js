@@ -39,6 +39,9 @@ app.use("/api/users", usersRoute)
 //order
 app.use('/api/orders', orderRoute)
 
+//paypal 
+app.use('/api/config/paypal', (req,res)=> res.send(process.env.PAYPAL_CLIENT_ID))
+
 //404
 app.use(errMidlleware.notFound)
 

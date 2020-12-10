@@ -62,7 +62,7 @@ const getOrderByID = asyncHandler(async (req, res) => {
 
 
 //@desc update order to paid
-//@route GET /api/orders/:id/pay
+//@route PUT /api/orders/:id/pay
 //@access Privé
 //_____________________update order to paid_____________________________________
 const updateOrederToPaid = asyncHandler(async (req, res) => {
@@ -89,4 +89,4 @@ const updateOrederToPaid = asyncHandler(async (req, res) => {
     }
 });
 
-export { createNewOrder,getOrderByID };
+export { createNewOrder,getOrderByID,updateOrederToPaid };

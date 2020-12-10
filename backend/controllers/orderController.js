@@ -6,7 +6,7 @@ import Order from '../models/orderModel.js';
 //@access Privé
 //_____________________create an order_____________________________________
 const createNewOrder = asyncHandler(async (req, res) => {
-    console.log('route create order')
+    console.log('route create order');
     const {
         orderItems,
         shippingAdress,
@@ -29,15 +29,35 @@ const createNewOrder = asyncHandler(async (req, res) => {
             itemsPrice,
             shippingPrice,
             totalPrice,
-            taxePrice
+            taxePrice,
         });
         const createOrder = await order.save();
         res.status(201).json({
             status: 'success',
-            order: createOrder
-        })
+            order: createOrder,
+        });
     }
 });
 
+//@desc get order by ID
+//@route GET /api/orders/:id
+//@access Privé
+//_____________________GET an order_____________________________________
+const getOrderByID = asyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id).populate(
+        'user',
+        'name email'
+    );
 
-export {createNewOrder}
+    if (order) {
+        res.status(200).json({
+            status: 'success',
+            order,
+        });
+    } else {
+        res.status(404);
+        throw new Error('Order not found');
+    }
+});
+
+export { createNewOrder,getOrderByID };

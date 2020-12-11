@@ -138,7 +138,7 @@ const ProfilePage = ({ location, history }) => {
                             </tr>
                         </thead>
                         <tbody>
-                            {orders.map((order) => (
+                            {orders && orders.map((order) => (
                                 <tr key={order._id}>
                                     <td>{order._id}</td>
                                     <td>{order.createdAt && order.createdAt.substring(0, 10)}</td>
@@ -166,7 +166,7 @@ const ProfilePage = ({ location, history }) => {
                                     </td>
                                     <td>
                                         <LinkContainer
-                                            to={`/order/${order._id}`}
+                                            to={`/orders/${order._id}`}
                                         >
                                             <Button variant="light" className='btn-sm'>
                                                 {' '}

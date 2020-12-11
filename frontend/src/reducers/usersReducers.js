@@ -12,7 +12,7 @@ import {
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
     USER_UPDATE_PROFILE_FAIL,
-    
+    USER_DETAIL_RESET,
 } from '../constants/userConstant';
 
 export const userLoginReducer = (state = {}, action) => {
@@ -22,12 +22,12 @@ export const userLoginReducer = (state = {}, action) => {
                 loading: true,
             };
         case USER_LOGIN_SUCCESS:
-            console.log(action.payload)
+            console.log(action.payload);
             return { loading: false, userInfo: action.payload };
         case USER_LOGIN_FAIL:
             return { loading: false, error: action.payload };
         case USER_LOGOUT:
-            return {}
+            return {};
 
         default:
             return state;
@@ -55,13 +55,19 @@ export const userDetailReducer = (state = { user: {} }, action) => {
     switch (action.type) {
         case USER_DETAIL_REQUEST:
             return {
-                ...state,loading: true,
+                ...state,
+                loading: true,
             };
         case USER_DETAIL_SUCCESS:
-            console.log('du',action.payload)
+            console.log('du', action.payload);
             return { loading: false, user: action.payload };
         case USER_DETAIL_FAIL:
             return { loading: false, error: action.payload };
+
+        case USER_DETAIL_RESET:
+            return {
+                user: {},
+            };
 
         default:
             return state;
@@ -71,11 +77,11 @@ export const userDetailReducer = (state = { user: {} }, action) => {
 export const userUpdateProfileReducer = (state = {}, action) => {
     switch (action.type) {
         case USER_UPDATE_PROFILE_REQUEST:
-            return {loading: true};
+            return { loading: true };
 
         case USER_UPDATE_PROFILE_SUCCESS:
-            return { loading: false,success: true, userInfo: action.payload };
-            
+            return { loading: false, success: true, userInfo: action.payload };
+
         case USER_UPDATE_PROFILE_FAIL:
             return { loading: false, error: action.payload };
 
@@ -83,4 +89,3 @@ export const userUpdateProfileReducer = (state = {}, action) => {
             return state;
     }
 };
-

@@ -11,7 +11,8 @@ import {
     ORDER_PAY_REQUEST,
     ORDER_OWN_LIST_FAIL,
     ORDER_OWN_LIST_SUCCESS,
-    ORDER_OWN_LIST_REQUEST
+    ORDER_OWN_LIST_REQUEST,
+    ORDER_OWN_LIST_RESET
 } from '../constants/orderConstants';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -111,6 +112,11 @@ export const orderOwnListReducer = (state= { orders:[]}, action) =>{
             return {
                 loading: false,
                 error: action.payload
+            }
+        
+        case  ORDER_OWN_LIST_RESET:
+            return {
+                order : []
             }
 
         default: return state;

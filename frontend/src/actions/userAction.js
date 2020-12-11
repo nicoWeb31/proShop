@@ -12,7 +12,9 @@ import {
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
     USER_UPDATE_PROFILE_FAIL,
+    USER_DETAIL_RESET
 } from '../constants/userConstant';
+import {ORDER_OWN_LIST_RESET} from '../constants/orderConstants'
 import axios from 'axios';
 
 export const login = (email, password) => async (dispatch) => {
@@ -144,4 +146,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo');
     dispatch({ type: USER_LOGOUT });
+    dispatch({type: USER_DETAIL_RESET})
+    dispatch({type: ORDER_OWN_LIST_RESET})
+
 };

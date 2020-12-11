@@ -12,7 +12,11 @@ import {
     USER_UPDATE_PROFILE_REQUEST,
     USER_UPDATE_PROFILE_SUCCESS,
     USER_UPDATE_PROFILE_FAIL,
-    USER_DETAIL_RESET
+    USER_DETAIL_RESET,
+    USER_LIST_REQUEST,
+    USER_LIST_FAIL,
+    USER_LIST_SUCCESS,
+    USER_LIST_RESET
 } from '../constants/userConstant';
 import {ORDER_OWN_LIST_RESET} from '../constants/orderConstants'
 import axios from 'axios';
@@ -143,10 +147,42 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
     }
 };
 
+export const getAllUserForAdmin = () => async (dispatch, getState) => {
+    try {
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        dispatch({ type: USER_LIST_REQUEST });
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const { data } = await axios.get(`/api/users`,config);
+        dispatch({
+            type: USER_LIST_SUCCESS,
+            payload: data.users,
+        });
+    } catch (error) {
+        //dispatch des errors
+        dispatch({
+            type: USER_LIST_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo');
     dispatch({ type: USER_LOGOUT });
     dispatch({type: USER_DETAIL_RESET})
     dispatch({type: ORDER_OWN_LIST_RESET})
+    dispatch({type : USER_DETAIL_RESET})
 
 };

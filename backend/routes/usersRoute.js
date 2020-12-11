@@ -5,6 +5,7 @@ import {
     createUser,
     UpdateProfileUser,
     getAllUseurForAdmin,
+    delteUserForAdmin
 } from '../controllers/usersController.js';
 const router = express.Router();
 import { protect,admin } from '../middleware/authMiddlware.js';
@@ -36,5 +37,8 @@ router
     //@route GET /api/users
     //@access Prive/Admin :
     .get(protect,admin,getAllUseurForAdmin);
-
+//@desc delete user admin only
+//@route DELETE /api/users/:id
+//@access Prive/Admin
+router.delete('/:id',protect,admin,delteUserForAdmin);
 export default router;

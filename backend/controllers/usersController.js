@@ -135,8 +135,26 @@ const getAllUseurForAdmin = asyncHandler(async (req, res) => {
     const users = await User.find({});
     res.status(200).json({
         status: 'success',
-        users
-    })
+        users,
+    });
 });
 
-export { authUser, profileUser, createUser, UpdateProfileUser,getAllUseurForAdmin };
+//@desc delete user admin only
+//@route DELETE /api/users/:id
+//@access Prive/Admin
+//_____________________get all users Admin___________________________________________
+const delteUserForAdmin = asyncHandler(async (req, res) => {
+    await User.findByIdAndDelete(req.params.id, (err) => {
+        if (err) throw new Error('User not found !');
+    });
+    res.status(204).json({ message: 'User deleted' });
+});
+
+export {
+    authUser,
+    profileUser,
+    createUser,
+    UpdateProfileUser,
+    getAllUseurForAdmin,
+    delteUserForAdmin,
+};

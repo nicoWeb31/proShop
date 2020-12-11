@@ -2,36 +2,42 @@ import React, { useEffect } from 'react';
 import { Button, Table } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { getAllUserForAdmin } from '../actions/userAction';
+import { getAllUserForAdmin, deletUserForAdmin } from '../actions/userAction';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
-
-const UsersPage = ({ history}) => {
+const UsersPage = ({ history }) => {
     const dispatch = useDispatch();
     const userList = useSelector((state) => state.userList);
     const { loading, error, users } = userList;
 
-    const userLogin = useSelector((state) => state.userList);
-    const { userInfo, } = userLogin;
+    const userLogin = useSelector((state) => state.userLogin);
+    const { userInfo } = userLogin;
+
+    const userDelete = useSelector((state) => state.userDelete);
+    const { success: successDelete } = userDelete;
 
     useEffect(() => {
-        if(userInfo && userInfo.isAdmin) {
+        if (userInfo && userInfo.isAdmin) {
             dispatch(getAllUserForAdmin());
-        }else{
-            history.push('/login')
+        } else {
+            history.push('/login');
         }
-            
-    }, [dispatch,history,userInfo]);
+    }, [dispatch, history, userInfo, successDelete]);
 
     //______________fonction____________________
-    const deleteHandler =()=>{
-
-    }
+    const deleteHandler = (id) => {
+        if (window.confirm('Are you sure you want to delete this user ??')) {
+            dispatch(deletUserForAdmin(id));
+        }
+    };
 
     return (
         <>
             <h1>Users</h1>
+            {successDelete && (
+                <Message variant="success">User delete whit success</Message>
+            )}
             {loading ? (
                 <Loader />
             ) : error ? (
@@ -72,12 +78,21 @@ const UsersPage = ({ history}) => {
                                     )}
                                 </th>
                                 <th>
-                                    <LinkContainer to={`/user/${user.id}/edit`}>
-                                        <Button className="btn-sm" variant="success">
+                                    <LinkContainer
+                                        to={`/user/${user._id}/edit`}
+                                    >
+                                        <Button
+                                            className="btn-sm"
+                                            variant="success"
+                                        >
                                             <i className="fas fa-edit"></i>
                                         </Button>
                                     </LinkContainer>
-                                    <Button variant="danger" className="btn-sm" onclick={()=>deleteHandler(user.id)}>
+                                    <Button
+                                        variant="danger"
+                                        className="btn-sm"
+                                        onClick={() => deleteHandler(user._id)}
+                                    >
                                         <i className="fas fa-trash"></i>
                                     </Button>
                                 </th>

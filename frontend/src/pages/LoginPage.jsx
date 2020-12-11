@@ -61,7 +61,7 @@ const LoginPage = ({ location, history }) => {
                     ></Form.Control>
                 </Form.Group>
 
-                <Button type="submit" Variante="primary">
+                <Button type="submit" Variant="primary">
                     Sign In
                 </Button>
             </Form>

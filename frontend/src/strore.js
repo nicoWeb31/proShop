@@ -13,9 +13,15 @@ import {
     userRegisterReducer,
     userDetailReducer,
     userUpdateProfileReducer,
-    userListReducer
+    userListReducer,
+    userDeleteReducer,
 } from './reducers/usersReducers';
-import { orderCreateReducer, orderDetailsReducer,orderPayReducer,orderOwnListReducer } from './reducers/orderReducers'
+import {
+    orderCreateReducer,
+    orderDetailsReducer,
+    orderPayReducer,
+    orderOwnListReducer,
+} from './reducers/orderReducers';
 
 const reducer = combineReducers({
     productList: productListReducer,
@@ -26,11 +32,11 @@ const reducer = combineReducers({
     userDetail: userDetailReducer,
     userUpdateProfile: userUpdateProfileReducer,
     orderCreate: orderCreateReducer,
-    orderDetails:orderDetailsReducer,
+    orderDetails: orderDetailsReducer,
     orderPay: orderPayReducer,
     orderOwnList: orderOwnListReducer,
     userList: userListReducer,
-
+    userDelete: userDeleteReducer,
 });
 
 //storage state initial with data in storage

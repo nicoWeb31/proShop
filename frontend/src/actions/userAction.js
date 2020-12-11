@@ -16,7 +16,10 @@ import {
     USER_LIST_REQUEST,
     USER_LIST_FAIL,
     USER_LIST_SUCCESS,
-    USER_LIST_RESET
+    USER_LIST_RESET,
+    USER_DELETE_REQUEST,
+    USER_DELETE_SUCCESS,
+    USER_DELETE_FAIL
 } from '../constants/userConstant';
 import {ORDER_OWN_LIST_RESET} from '../constants/orderConstants'
 import axios from 'axios';
@@ -170,6 +173,37 @@ export const getAllUserForAdmin = () => async (dispatch, getState) => {
         //dispatch des errors
         dispatch({
             type: USER_LIST_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+
+export const deletUserForAdmin = (id) => async (dispatch, getState) => {
+    try {
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        dispatch({ type: USER_DELETE_REQUEST });
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        await axios.delete(`/api/users/${id}`,config);
+        dispatch({
+            type: USER_DELETE_SUCCESS,
+        });
+    } catch (error) {
+        //dispatch des errors
+        dispatch({
+            type: USER_DELETE_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

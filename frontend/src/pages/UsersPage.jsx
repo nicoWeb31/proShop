@@ -79,7 +79,7 @@ const UsersPage = ({ history }) => {
                                 </th>
                                 <th>
                                     <LinkContainer
-                                        to={`/user/${user._id}/edit`}
+                                        to={`/admin/user/${user._id}/edit`}
                                     >
                                         <Button
                                             className="btn-sm"

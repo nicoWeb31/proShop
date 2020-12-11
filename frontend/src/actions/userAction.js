@@ -19,7 +19,10 @@ import {
     USER_LIST_RESET,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESS,
-    USER_DELETE_FAIL
+    USER_DELETE_FAIL,
+    USER_UPDATE_REQUEST,
+    USER_UPDATE_SUCCESS,
+    USER_UPDATE_FAIL
 } from '../constants/userConstant';
 import {ORDER_OWN_LIST_RESET} from '../constants/orderConstants'
 import axios from 'axios';
@@ -204,6 +207,39 @@ export const deletUserForAdmin = (id) => async (dispatch, getState) => {
         //dispatch des errors
         dispatch({
             type: USER_DELETE_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const updateUserForAdmin = (id,user) => async (dispatch, getState) => {
+    try {
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        dispatch({ type: USER_UPDATE_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+
+        const {data} = await axios.put(`/api/users/${id}`,user,config);
+        dispatch({
+            type: USER_UPDATE_SUCCESS,
+        });
+        //dispatch aussi le details user update
+        dispatch({type: USER_DETAIL_SUCCESS, payload : data.user })
+    } catch (error) {
+        //dispatch des errors
+        dispatch({
+            type: USER_UPDATE_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

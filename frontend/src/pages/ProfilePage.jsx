@@ -108,7 +108,7 @@ const ProfilePage = ({ location, history }) => {
                         ></Form.Control>
                     </Form.Group>
 
-                    <Button type="submit" Variant="primary">
+                    <Button type="submit" variant="primary">
                         Update !
                     </Button>
                 </Form>

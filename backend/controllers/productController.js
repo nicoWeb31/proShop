@@ -38,8 +38,24 @@ const fetchOneProduct = asyncHandler(async (req, res) => {
     }
 });
 
+
+//@desc delete for admin
+//@route delete /api/products/:id
+//@access Privé/Admin
+//_____________________fetch by ID_______________________________________________
+const deleteProduct = asyncHandler(async (req, res) => {
+
+    await Product.findByIdAndDelete(req.params.id, (err)=>{
+        if (err) throw new Error("product not found or something is wrong !");
+
+        res.status(204).json({})
+    })
+
+});
+
 export {
     fetchOneProduct,
     fetchAllPoducts,
     test,
+    deleteProduct
 };

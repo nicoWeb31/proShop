@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Button, Table, Row, Col } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
-import { listPoducts } from '../actions/productsAction';
+import { listPoducts, deleteProduct } from '../actions/productsAction';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 
@@ -14,18 +14,25 @@ const ProductsList = ({ history, match }) => {
     const userLogin = useSelector((state) => state.userLogin);
     const { userInfo } = userLogin;
 
+    const productDelete = useSelector((state) => state.productDelete);
+    const {
+        success: successDelete,
+        loading: loadingDelete,
+        error: errorDelete,
+    } = productDelete;
+
     useEffect(() => {
         if (userInfo && userInfo.isAdmin) {
             dispatch(listPoducts());
         } else {
             history.push('/login');
         }
-    }, [dispatch, history, userInfo]);
+    }, [dispatch, history, userInfo, successDelete]);
 
     //______________fonction____________________
     const deleteHandler = (id) => {
-        if (window.confirm('Are you sure you want to delete this user ??')) {
-            //TODO: delete product
+        if (window.confirm('Are you sure you want to delete this product ??')) {
+            dispatch(deleteProduct(id));
         }
     };
 
@@ -45,6 +52,13 @@ const ProductsList = ({ history, match }) => {
                     </Button>
                 </Col>
             </Row>
+            {loadingDelete && <Loader />}
+            {errorDelete && <Message variant="danger">{errorDelete}</Message>}
+            {successDelete && (
+                <Message variant="success">
+                    Product delete with success !
+                </Message>
+            )}
 
             {loading ? (
                 <Loader />
@@ -85,7 +99,9 @@ const ProductsList = ({ history, match }) => {
                                     <Button
                                         variant="danger"
                                         className="btn-sm"
-                                        onClick={() => deleteHandler(product._id)}
+                                        onClick={() =>
+                                            deleteHandler(product._id)
+                                        }
                                     >
                                         <i className="fas fa-trash"></i>
                                     </Button>

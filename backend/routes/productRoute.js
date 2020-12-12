@@ -2,8 +2,9 @@ import express from 'express';
 import {
     fetchAllPoducts,
     fetchOneProduct,
+    deleteProduct
 } from '../controllers/productController.js';
-import { protect, admin } from '../middleware/authMiddlware';
+import { protect, admin } from '../middleware/authMiddlware.js';
 
 const router = express.Router();
 

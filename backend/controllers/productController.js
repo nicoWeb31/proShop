@@ -45,11 +45,16 @@ const fetchOneProduct = asyncHandler(async (req, res) => {
 //_____________________fetch by ID_______________________________________________
 const deleteProduct = asyncHandler(async (req, res) => {
 
-    await Product.findByIdAndDelete(req.params.id, (err)=>{
-        if (err) throw new Error("product not found or something is wrong !");
+    const product = await Product.findByIdAndDelete(req.params.id);
 
-        res.status(204).json({})
-    })
+    if(!product) {
+        throw new Error('product not found!!!')
+    }
+
+    res.status(204).json({
+        status: "success",
+        data: null,
+    });
 
 });
 

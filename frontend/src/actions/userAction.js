@@ -16,7 +16,6 @@ import {
     USER_LIST_REQUEST,
     USER_LIST_FAIL,
     USER_LIST_SUCCESS,
-    USER_LIST_RESET,
     USER_DELETE_REQUEST,
     USER_DELETE_SUCCESS,
     USER_DELETE_FAIL,
@@ -215,7 +214,7 @@ export const deletUserForAdmin = (id) => async (dispatch, getState) => {
     }
 };
 
-export const updateUserForAdmin = (id,user) => async (dispatch, getState) => {
+export const updateUserForAdmin = (user) => async (dispatch, getState) => {
     try {
         const {
             userLogin: { userInfo },
@@ -230,7 +229,7 @@ export const updateUserForAdmin = (id,user) => async (dispatch, getState) => {
             },
         };
 
-        const {data} = await axios.put(`/api/users/${id}`,user,config);
+        const {data} = await axios.put(`/api/users/${user._id}`,user,config);
         dispatch({
             type: USER_UPDATE_SUCCESS,
         });

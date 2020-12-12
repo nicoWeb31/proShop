@@ -5,7 +5,7 @@ import express from 'express';
 const app = express();
 import dotenv from 'dotenv';
 import totoBDD from './config/db.js';
-import morgan from 'morgan';
+import morgan from 'morgan'; 
 import colors from 'colors';
 
 import productRoute from './routes/productRoute.js';

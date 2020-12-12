@@ -7,37 +7,48 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 //action
-import { getUserDetails } from '../actions/userAction';
+import { getUserDetails, updateUserForAdmin } from '../actions/userAction';
+import { USER_UPDATE_RESET } from '../constants/userConstant';
 
 const UserEditPage = ({ match, history }) => {
     const userId = match.params.id;
 
     const [email, setEmail] = useState('');
     const [isAdmin, setIsAdmin] = useState('');
+    console.log("🚀 ~ file: UserEditPage.jsx ~ line 18 ~ UserEditPage ~ isAdmin", isAdmin)
     const [name, setName] = useState('');
-    const [message, setMessage] = useState(null);
+
 
     const dispatch = useDispatch();
     const userDetail = useSelector((state) => state.userDetail);
     const { loading, error, user } = userDetail;
-    console.log(
-        '🚀 ~ file: UserEditPage.jsx ~ line 23 ~ UserEditPage ~ user',
-        user
-    );
+
+    const userUpdate = useSelector((state) => state.userUpdate);
+    const {
+        loading: loadingUpdate,
+        error: errorUpdate,
+        success: successUpdate,
+    } = userUpdate;
 
     useEffect(() => {
-        if (!user.name || user._id !== userId) {
-            dispatch(getUserDetails(userId));
+        if (successUpdate) {
+            dispatch({ type: USER_UPDATE_RESET });
+            history.push('/admin/userslist');
         } else {
-            setName(user.name);
-            setEmail(user.email);
-            setIsAdmin(user.isAdmin);
+            if (!user.name || user._id !== userId) {
+                dispatch(getUserDetails(userId));
+            } else {
+                setName(user.name);
+                setEmail(user.email);
+                setIsAdmin(user.isAdmin);
+            }
         }
-    }, [user]);
+    }, [user, dispatch, userId, successUpdate,history]);
 
     //______________fonction____________________
     const submitHandler = (e) => {
         e.preventDefault();
+        dispatch(updateUserForAdmin({ _id: userId, name, email, isAdmin }));
     };
 
     return (
@@ -47,6 +58,8 @@ const UserEditPage = ({ match, history }) => {
             </Link>
             <FormContainer>
                 <h1>Edit User</h1>
+                {loadingUpdate  && <Loader/>}
+                {errorUpdate && <Message variant="danger"> {errorUpdate}</Message>}
 
                 {loading ? (
                     <Loader />

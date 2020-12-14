@@ -15,7 +15,7 @@ router
     //@desc Fetch all products
     //@route Get /api/products
     //@access Public
-    .get(protect,admin,fetchAllPoducts)
+    .get(fetchAllPoducts)
     //@desc create for admin
     //@route POST /api/products
     //@access Privé/Admin

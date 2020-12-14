@@ -85,3 +85,32 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
         });
     }
 };
+
+
+export const createProduct = (id) => async (dispatch, getState) => {
+    try {
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        dispatch({ type: PRODUCT_DELETE_REQUEST });
+
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+        await axios.delete(`/api/products/${id}`, config);
+
+        dispatch({ type: PRODUCT_DELETE_SUCCESS });
+    } catch (error) {
+        //dispatch des errors
+        dispatch({
+            type: PRODUCT_DELETE_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};

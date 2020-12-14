@@ -6,7 +6,8 @@ import { composeWithDevTools } from 'redux-devtools-extension'; //for devtools
 import {
     productListReducer,
     productDetailsReducer,
-    productDeleteReducer
+    productDeleteReducer,
+    productCreateReducer
 } from './reducers/productReducer';
 import { cartReducer } from './reducers/cartReducer';
 import {
@@ -40,7 +41,8 @@ const reducer = combineReducers({
     orderOwnList: orderOwnListReducer,
     userList: userListReducer,
     userDelete: userDeleteReducer,
-    userUpdate:userUpdateReducer
+    userUpdate:userUpdateReducer,
+    productCreate:productCreateReducer
 });
 
 //storage state initial with data in storage

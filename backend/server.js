@@ -1,6 +1,7 @@
 // const express = require('express');
 // const products = require('./data/products');
 // const dotenv = require('dotenv');
+import path from 'path';
 import express from 'express';
 const app = express();
 import dotenv from 'dotenv';
@@ -12,7 +13,7 @@ import productRoute from './routes/productRoute.js';
 import usersRoute from './routes/usersRoute.js';
 import orderRoute from './routes/orderRoutes.js'
 import errMidlleware from './middleware/errMidlleware.js';
-
+import uploadRoute from './routes/uploadRoute.js';
 
 
 dotenv.config();
@@ -39,12 +40,19 @@ app.use("/api/users", usersRoute)
 //order
 app.use('/api/orders', orderRoute)
 
+//upoload 
+app.use('/api/upload', uploadRoute)
+
 //paypal 
 app.use('/api/config/paypal', (req,res)=> res.send(process.env.PAYPAL_CLIENT_ID))
 
 //404
 app.use(errMidlleware.notFound)
 
+
+//static files
+const __dirname = path.resolve()
+app.use('/upload',express.static(path.join(__dirname, '/upload')))
 
 //_____________________Err midlleware_____________________________________
 app.use(errMidlleware.errorHandler)

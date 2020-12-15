@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Form, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,6 +21,7 @@ const ProductEditPage = ({ match, history }) => {
     const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
     const [countInStock, setCountInStock] = useState('');
+    const [uplodading, setUplodading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -50,21 +52,46 @@ const ProductEditPage = ({ match, history }) => {
                 setCountInStock(product.countInStock);
             }
         }
-    }, [dispatch, productId, product,successUpdate, history]);
+    }, [dispatch, productId, product, successUpdate, history]);
 
     //______________fonction____________________
     const submitHandler = (e) => {
         e.preventDefault();
-        dispatch(updateProduct({
-            _id: productId,
-            name,
-            price,
-            image,
-            brand,
-            category,
-            description,
-            countInStock
-        }));
+        dispatch(
+            updateProduct({
+                _id: productId,
+                name,
+                price,
+                image,
+                brand,
+                category,
+                description,
+                countInStock,
+            })
+        );
+    };
+
+    const uploadFileHandler = async(e) => {
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('image', file);
+        setUplodading(true);
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            };
+            const { data } = await axios.post('/api/upload', formData, config);
+            setImage(data);
+            setUplodading(false)
+
+
+        } catch (error) {
+            console.error(error);
+            setUplodading(false)
+
+        }
     };
 
     return (
@@ -125,6 +152,13 @@ const ProductEditPage = ({ match, history }) => {
                                 value={image}
                                 onChange={(e) => setImage(e.target.value)}
                             ></Form.Control>
+                            <Form.File
+                                id="image-file"
+                                label="Choose File"
+                                custom
+                                onChange={uploadFileHandler}
+                            ></Form.File>
+                            {uplodading && <Loader />}
                         </Form.Group>
 
                         <Form.Group controlId="brand">

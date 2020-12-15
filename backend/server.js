@@ -28,6 +28,10 @@ if (process.env.NODE_ENV !== "production") {
 //parser
 app.use(express.json())
 
+//static files
+const __dirname = path.resolve();
+console.log("🚀 ~ file: server.js ~ line 55 ~ __dirname", __dirname+'/uploads/')
+app.use('/uploads',express.static(__dirname + '/uploads/'))
 
 //_____________________ROUTE_____________________________________
 app.get('/', (req, res) => {
@@ -50,9 +54,6 @@ app.use('/api/config/paypal', (req,res)=> res.send(process.env.PAYPAL_CLIENT_ID)
 app.use(errMidlleware.notFound)
 
 
-//static files
-const __dirname = path.resolve()
-app.use('/upload',express.static(path.join(__dirname, '/upload')))
 
 //_____________________Err midlleware_____________________________________
 app.use(errMidlleware.errorHandler)

@@ -15,7 +15,11 @@ import {
     ORDER_OWN_LIST_RESET,
     ORDER_GET_ALL_REQUEST,
     ORDER_GET_ALL_SUCCESS,
-    ORDER_GET_ALL_FAIL
+    ORDER_GET_ALL_FAIL,
+    ORDER_DELIVERED_REQUEST,
+    ORDER_DELIVERED_SUCCESS,
+    ORDER_DELIVERED_FAIL,
+    ORDER_DELIVERED_RESET,
 } from '../constants/orderConstants';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -25,127 +29,155 @@ export const orderCreateReducer = (state = {}, action) => {
                 loading: true,
             };
         case ORDER_CREATE_SUCCESS:
-            console.log(action.payload)
+            console.log(action.payload);
             return {
                 loading: false,
-                success : true,
-                order: action.payload
+                success: true,
+                order: action.payload,
             };
 
-        case ORDER_CREATE_FAIL: 
+        case ORDER_CREATE_FAIL:
             return {
-                loading : false,
-                error : action.payload
-            }    
+                loading: false,
+                error: action.payload,
+            };
 
         default:
             return state;
     }
 };
 
-
-export const orderDetailsReducer = (state= {loading :true, lorderItems: [], shippingAdress:{}}, action) =>{
+export const orderDetailsReducer = (
+    state = { loading: true, lorderItems: [], shippingAdress: {} },
+    action
+) => {
     switch (action.type) {
-
-        case ORDER_DETAILS_REQUEST: 
+        case ORDER_DETAILS_REQUEST:
             return {
                 ...state,
-                loading: true
-            }
+                loading: true,
+            };
 
-        case ORDER_DETAILS_SUCCESS: 
+        case ORDER_DETAILS_SUCCESS:
             return {
                 loading: false,
-                order : action.payload
-            }
-        
+                order: action.payload,
+            };
+
         case ORDER_DETAILS_FAIL:
             return {
                 loading: false,
-                error: action.payload
-            }     
+                error: action.payload,
+            };
 
-        default: return state;
+        default:
+            return state;
     }
-}
+};
 
-
-export const orderPayReducer = (state= {}, action) =>{
+export const orderPayReducer = (state = {}, action) => {
     switch (action.type) {
-
-        case ORDER_PAY_REQUEST: 
+        case ORDER_PAY_REQUEST:
             return {
-                loading: true
-            }
+                loading: true,
+            };
 
-        case ORDER_PAY_SUCCESS: 
+        case ORDER_PAY_SUCCESS:
             return {
                 loading: false,
-                success: true
-            }
-        
+                success: true,
+            };
+
         case ORDER_PAY_FAIL:
             return {
                 loading: false,
-                error: action.payload
-            }
-        
-        case ORDER_PAY_RESET :
-            return {}
+                error: action.payload,
+            };
 
-        default: return state;
+        case ORDER_PAY_RESET:
+            return {};
+
+        default:
+            return state;
     }
-}
+};
 
-export const orderOwnListReducer = (state= { orders:[]}, action) =>{
+export const orderOwnListReducer = (state = { orders: [] }, action) => {
     switch (action.type) {
-
-        case ORDER_OWN_LIST_REQUEST: 
+        case ORDER_OWN_LIST_REQUEST:
             return {
-                loading: true
-            }
+                loading: true,
+            };
 
-        case ORDER_OWN_LIST_SUCCESS: 
+        case ORDER_OWN_LIST_SUCCESS:
             return {
                 loading: false,
-                orders: action.payload
-            }
-        
+                orders: action.payload,
+            };
+
         case ORDER_OWN_LIST_FAIL:
             return {
                 loading: false,
-                error: action.payload
-            }
-        
-        case  ORDER_OWN_LIST_RESET:
-            return {
-                order : []
-            }
+                error: action.payload,
+            };
 
-        default: return state;
+        case ORDER_OWN_LIST_RESET:
+            return {
+                order: [],
+            };
+
+        default:
+            return state;
     }
-}
+};
 
-export const orderGetAllReducer = (state= { orders:[]}, action) =>{
+export const orderGetAllReducer = (state = { orders: [] }, action) => {
     switch (action.type) {
-
-        case ORDER_GET_ALL_REQUEST: 
+        case ORDER_GET_ALL_REQUEST:
             return {
-                loading: true
-            }
+                loading: true,
+            };
 
-        case ORDER_GET_ALL_SUCCESS: 
+        case ORDER_GET_ALL_SUCCESS:
             return {
                 loading: false,
-                orders: action.payload
-            }
-        
+                orders: action.payload,
+            };
+
         case ORDER_GET_ALL_FAIL:
             return {
                 loading: false,
-                error: action.payload
-            }
-        
-        default: return state;
+                error: action.payload,
+            };
+
+        default:
+            return state;
     }
-}
+};
+
+export const orderDeliveredReducer = (state = {}, action) => {
+    switch (action.type) {
+        case ORDER_DELIVERED_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case ORDER_DELIVERED_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+            };
+
+        case ORDER_DELIVERED_FAIL:
+            return {
+                loading: false,
+                error: action.payload,
+            };
+
+        case ORDER_DELIVERED_RESET:
+            return {};
+
+        default:
+            return state;
+    }
+};

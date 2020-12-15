@@ -60,7 +60,6 @@ const getOrderByID = asyncHandler(async (req, res) => {
     }
 });
 
-
 //@desc update order to paid
 //@route PUT /api/orders/:id/pay
 //@access Privé
@@ -74,11 +73,11 @@ const updateOrederToPaid = asyncHandler(async (req, res) => {
         order.paymentResult = {
             id: req.body.id,
             status: req.body.status,
-            update_time : req.body.update_time,
-            email_address : req.body.payer.email_address
-        }
+            update_time: req.body.update_time,
+            email_address: req.body.payer.email_address,
+        };
 
-        const updateOrder = await order.save();  
+        const updateOrder = await order.save();
         res.status(200).json({
             status: 'success',
             updateOrder,
@@ -94,45 +93,47 @@ const updateOrederToPaid = asyncHandler(async (req, res) => {
 //@access Privé
 //_____________________get my orders_____________________________________
 const getMyOwnOrders = asyncHandler(async (req, res) => {
-
-    const orders = await Order.find({user : req.user.id});
-    console.log("🚀 ~ file: orderController.js ~ line 99 ~ getMyOwnOrders ~ d", orders)
+    const orders = await Order.find({ user: req.user.id });
+    console.log(
+        '🚀 ~ file: orderController.js ~ line 99 ~ getMyOwnOrders ~ d',
+        orders
+    );
 
     res.status(200).json({
         status: 'success',
-        orders
-    })
+        orders,
+    });
 });
-
 
 //@desc get all orders
 //@route GET /api/orders
 //@access Privé/admin
 //_____________________get all  orders_____________________________________
 const getALLOrders = asyncHandler(async (req, res) => {
-
-    const orders = await Order.find({}).populate('user','id name')
-    console.log("🚀 ~ file: orderController.js ~ line 115 ~ getALLOrders ~ orders", orders)
+    const orders = await Order.find({}).populate('user', 'id name');
+    console.log(
+        '🚀 ~ file: orderController.js ~ line 115 ~ getALLOrders ~ orders',
+        orders
+    );
 
     res.status(200).json({
         status: 'success',
-        orders
-    })
+        orders,
+    });
 });
 
 //@desc update order to delivered
-//@route patch /api/orders/:id
+//@route put /api/orders/:id/delivered
 //@access Privé/admin
 //_____________________update order to delivered no data from the body_____________________________________
 const updateOrderToDelivered = asyncHandler(async (req, res) => {
-    const orderupdate = await Order.findById(req.params.id);
+    const orderupdate = await Order.findByIdAndUpdate(req.params.id,req.body);
 
     if (orderupdate) {
-        order.isPaid = true;
-        order.deliveredAt = Date.now();
-        
+        orderupdate.isDelivered = true;
+        orderupdate.deliveredAt = Date.now();
 
-        const updateOrder = await order.save();  
+        const updateOrder = await orderupdate.save();
         res.status(200).json({
             status: 'success',
             updateOrder,
@@ -143,5 +144,11 @@ const updateOrderToDelivered = asyncHandler(async (req, res) => {
     }
 });
 
-
-export { createNewOrder,getOrderByID,updateOrederToPaid,getMyOwnOrders,getALLOrders,updateOrderToDelivered };
+export {
+    createNewOrder,
+    getOrderByID,
+    updateOrederToPaid,
+    getMyOwnOrders,
+    getALLOrders,
+    updateOrderToDelivered,
+};

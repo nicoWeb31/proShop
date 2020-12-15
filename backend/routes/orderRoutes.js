@@ -33,11 +33,13 @@ router
     //@desc get order by ID
     //@route GET /api/orders/:id
     //@access Privé
-    .get(protect, getOrderByID)
+    .get(protect, getOrderByID);
+
+
     //@desc update order to delivered
-    //@route patch /api/orders/:id
+    //@route PUT /api/orders/:id/deliver
     //@access Privé/admin
-    .get(protect, admin, updateOrderToDelivered);
+    router.route('/:id/deliver').patch(protect, admin, updateOrderToDelivered);
 
 router
     .route('/:id/pay')

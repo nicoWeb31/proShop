@@ -8,10 +8,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 //action
-import { getOrderDetails, payOrder } from '../actions/orderAction';
-import { ORDER_PAY_RESET } from '../constants/orderConstants';
+import { getOrderDetails, payOrder,OrderDelivered } from '../actions/orderAction';
+import { ORDER_PAY_RESET, ORDER_DELIVERED_RESET} from '../constants/orderConstants';
 
-const OrderPage = ({ match }) => {
+const OrderPage = ({ match,history }) => {
     const orderId = match.params.id;
     const dispatch = useDispatch();
 
@@ -19,10 +19,22 @@ const OrderPage = ({ match }) => {
 
     const orderDetails = useSelector((state) => state.orderDetails);
     const { order, loading, error } = orderDetails;
+
+    const userInf = useSelector((state) => state.userLogin);
+    const { userInfo } = userInf;
+
     const orderPay = useSelector((state) => state.orderPay);
     const { success, loading: loadingPay } = orderPay;
 
+    const orderDelivered = useSelector((state) => state.orderDelivered);
+    const { success: successDeliver, loading: loadingDeliver } = orderDelivered;
+
     useEffect(() => {
+
+        if(!userInfo){
+            history.push('/login')
+        }
+
         const addPayPalScript = async () => {
             const { data: clientId } = await axios.get('/api/config/paypal');
             const script = document.createElement('script');
@@ -35,15 +47,16 @@ const OrderPage = ({ match }) => {
             document.body.appendChild(script);
         };
 
-        if (!order || success) {
+        if (!order || success || successDeliver) {
             dispatch({type: ORDER_PAY_RESET})
+            dispatch({type: ORDER_DELIVERED_RESET})
             dispatch(getOrderDetails(orderId));
         } else if (!order.isPaid) {
             addPayPalScript();
         } else {
             setSdkReady(true);
         }
-    }, [dispatch, orderId, success, order]);
+    }, [dispatch, orderId, success, order,successDeliver,history,userInfo]);
 
     //______________fonction____________________
     //calculate price:
@@ -60,6 +73,10 @@ const OrderPage = ({ match }) => {
         );
         dispatch(payOrder(orderId, paymentResult));
     };
+
+    const deliveredHandler =()=>{
+        dispatch(OrderDelivered(order))
+    }
 
     return loading ? (
         <Loader />
@@ -193,6 +210,12 @@ const OrderPage = ({ match }) => {
                                             onSuccess={successPaymentHandler}
                                         />
                                     )}
+                                </ListGroup.Item>
+                            )}
+                            {loadingDeliver && <Loader></Loader>}
+                            {userInfo && userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                                <ListGroup.Item>
+                                    <Button type='button' className='btn btn-block' onClick={deliveredHandler}> Mark as Deliver</Button>
                                 </ListGroup.Item>
                             )}
                         </ListGroup>

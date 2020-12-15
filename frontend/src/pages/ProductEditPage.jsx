@@ -7,8 +7,8 @@ import Message from '../components/Message';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
 //action
-import { productsDetails } from '../actions/productsAction';
-
+import { productsDetails, updateProduct } from '../actions/productsAction';
+import { PRODUCT_EDIT_RESET } from '../constants/productConstants';
 
 const ProductEditPage = ({ match, history }) => {
     const productId = match.params.id;
@@ -16,21 +16,28 @@ const ProductEditPage = ({ match, history }) => {
     const [name, setName] = useState('');
     const [price, setPrice] = useState('');
     const [image, setImage] = useState('');
-    const [brand, setBrand]= useState('');
-    const [category, setCategory]= useState('');
+    const [brand, setBrand] = useState('');
+    const [category, setCategory] = useState('');
     const [description, setDescription] = useState('');
-    const [countInStock,setCountInStock] = useState('');
-
+    const [countInStock, setCountInStock] = useState('');
 
     const dispatch = useDispatch();
-
 
     const productDetail = useSelector((state) => state.productDetails);
     const { loading, error, product } = productDetail;
 
+    const productUpdate = useSelector((state) => state.productEdit);
+    const {
+        loading: loadingUpdate,
+        error: errorUpdate,
+        sucess: successUpdate,
+    } = productUpdate;
 
     useEffect(() => {
-
+        if (successUpdate) {
+            dispatch({ type: PRODUCT_EDIT_RESET });
+            history.push('admin/productsList');
+        } else {
             if (!product.name || product._id !== productId) {
                 dispatch(productsDetails(productId));
             } else {
@@ -40,15 +47,24 @@ const ProductEditPage = ({ match, history }) => {
                 setBrand(product.brand);
                 setCategory(product.category);
                 setDescription(product.description);
-                setCountInStock(product.countInStock)
-
+                setCountInStock(product.countInStock);
             }
-    }, [dispatch, productId, product]);
+        }
+    }, [dispatch, productId, product,successUpdate, history]);
 
     //______________fonction____________________
     const submitHandler = (e) => {
         e.preventDefault();
-        //TODO:
+        dispatch(updateProduct({
+            _id: productId,
+            name,
+            price,
+            image,
+            brand,
+            category,
+            description,
+            countInStock
+        }));
     };
 
     return (
@@ -58,9 +74,13 @@ const ProductEditPage = ({ match, history }) => {
             </Link>
             <FormContainer>
                 <h1>Edit Product</h1>
-                {loading  && <Loader/>}
-                {error && <Message variant="danger"> {error}</Message>}
+                {/* edit loading */}
+                {loadingUpdate && <Loader />}
+                {errorUpdate && (
+                    <Message variant="danger"> {errorUpdate}</Message>
+                )}
 
+                {/* product details loading */}
                 {loading ? (
                     <Loader />
                 ) : error ? (
@@ -123,7 +143,9 @@ const ProductEditPage = ({ match, history }) => {
                                 type="number"
                                 placeholder="your Stock"
                                 value={countInStock}
-                                onChange={(e) => setCountInStock(e.target.value)}
+                                onChange={(e) =>
+                                    setCountInStock(e.target.value)
+                                }
                             ></Form.Control>
                         </Form.Group>
 
@@ -136,7 +158,6 @@ const ProductEditPage = ({ match, history }) => {
                                 onChange={(e) => setDescription(e.target.value)}
                             ></Form.Control>
                         </Form.Group>
-
 
                         <Form.Group controlId="category">
                             <Form.Label> Category </Form.Label>

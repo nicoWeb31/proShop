@@ -7,7 +7,8 @@ import {
     productListReducer,
     productDetailsReducer,
     productDeleteReducer,
-    productCreateReducer
+    productCreateReducer,
+    productEditReducer
 } from './reducers/productReducer';
 import { cartReducer } from './reducers/cartReducer';
 import {
@@ -42,7 +43,8 @@ const reducer = combineReducers({
     userList: userListReducer,
     userDelete: userDeleteReducer,
     userUpdate:userUpdateReducer,
-    productCreate:productCreateReducer
+    productCreate:productCreateReducer,
+    productEdit:productEditReducer
 });
 
 //storage state initial with data in storage

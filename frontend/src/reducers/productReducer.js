@@ -1,4 +1,7 @@
 import {
+    PRODUCT_EDIT_FAILURE,
+    PRODUCT_EDIT_RESET,
+    PRODUCT_EDIT_SUCCESS,
     PRODUCT_LIST_FAILURE,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
@@ -13,7 +16,8 @@ import {
     PRODUCT_CREATE_REQUEST,
     PRODUCT_CREATE_SUCCESS,
     PRODUCT_CREATE_FAILURE,
-    PRODUCT_CREATE_RESET
+    PRODUCT_CREATE_RESET,
+    PRODUCT_EDIT_REQUEST,
 } from '../constants/productConstants.js';
 
 export const productListReducer = (state = { products: [] }, action) => {
@@ -69,11 +73,7 @@ export const productDetailsReducer = (
     }
 };
 
-
-export const productDeleteReducer = (
-    state = {},
-    action
-) => {
+export const productDeleteReducer = (state = {}, action) => {
     switch (action.type) {
         case PRODUCT_DELETE_REQUEST:
             return {
@@ -83,7 +83,7 @@ export const productDeleteReducer = (
         case PRODUCT_DELETE_SUCCESS:
             return {
                 loading: false,
-                success:true
+                success: true,
             };
         case PRODUCT_DELETE_FAILURE: {
             return {
@@ -97,11 +97,7 @@ export const productDeleteReducer = (
     }
 };
 
-
-export const productCreateReducer = (
-    state = {},
-    action
-) => {
+export const productCreateReducer = (state = {}, action) => {
     switch (action.type) {
         case PRODUCT_CREATE_REQUEST:
             return {
@@ -111,7 +107,7 @@ export const productCreateReducer = (
         case PRODUCT_CREATE_SUCCESS:
             return {
                 loading: false,
-                success:true,
+                success: true,
                 product: action.payload,
             };
         case PRODUCT_CREATE_FAILURE: {
@@ -120,11 +116,37 @@ export const productCreateReducer = (
                 error: action.payload,
             };
         }
-        case PRODUCT_CREATE_RESET: 
-            return {}
+        case PRODUCT_CREATE_RESET:
+            return {};
         default: {
             return state;
         }
     }
 };
 
+export const productEditReducer = (state = {product:{}}, action) => {
+    switch (action.type) {
+        case PRODUCT_EDIT_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case PRODUCT_EDIT_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+                product: action.payload,
+            };
+        case PRODUCT_EDIT_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+        case PRODUCT_EDIT_RESET:
+            return {product:{}};
+        default: {
+            return state;
+        }
+    }
+};

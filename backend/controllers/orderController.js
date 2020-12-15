@@ -112,6 +112,7 @@ const getMyOwnOrders = asyncHandler(async (req, res) => {
 const getALLOrders = asyncHandler(async (req, res) => {
 
     const orders = await Order.find({}).populate('user','id name')
+    console.log("🚀 ~ file: orderController.js ~ line 115 ~ getALLOrders ~ orders", orders)
 
     res.status(200).json({
         status: 'success',

@@ -11,7 +11,10 @@ import {
     ORDER_PAY_REQUEST,
     ORDER_OWN_LIST_FAIL,
     ORDER_OWN_LIST_SUCCESS,
-    ORDER_OWN_LIST_REQUEST
+    ORDER_OWN_LIST_REQUEST,
+    ORDER_GET_ALL_REQUEST,
+    ORDER_GET_ALL_SUCCESS,
+    ORDER_GET_ALL_FAIL
 } from '../constants/orderConstants';
 
 import axios from 'axios';
@@ -133,6 +136,37 @@ export const ListOwnOrder = () => async (dispatch, getState) => {
         //dispatch des errors
         dispatch({
             type: ORDER_OWN_LIST_FAIL,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+
+export const getAllOrder = () => async (dispatch, getState) => {
+    try {
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        dispatch({ type: ORDER_GET_ALL_REQUEST });
+        const config = {
+            headers: {
+                Authorization: `Bearer ${userInfo.token}`
+            },
+        };
+
+        const { data } = await axios.get(`/api/orders`, config);
+        dispatch({
+            type: ORDER_GET_ALL_SUCCESS,
+            payload: data.orders,
+        });
+    } catch (error) {
+        //dispatch des errors
+        dispatch({
+            type: ORDER_GET_ALL_FAIL,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

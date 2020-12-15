@@ -12,7 +12,10 @@ import {
     ORDER_OWN_LIST_FAIL,
     ORDER_OWN_LIST_SUCCESS,
     ORDER_OWN_LIST_REQUEST,
-    ORDER_OWN_LIST_RESET
+    ORDER_OWN_LIST_RESET,
+    ORDER_GET_ALL_REQUEST,
+    ORDER_GET_ALL_SUCCESS,
+    ORDER_GET_ALL_FAIL
 } from '../constants/orderConstants';
 
 export const orderCreateReducer = (state = {}, action) => {
@@ -119,6 +122,30 @@ export const orderOwnListReducer = (state= { orders:[]}, action) =>{
                 order : []
             }
 
+        default: return state;
+    }
+}
+
+export const orderGetAllReducer = (state= { orders:[]}, action) =>{
+    switch (action.type) {
+
+        case ORDER_GET_ALL_REQUEST: 
+            return {
+                loading: true
+            }
+
+        case ORDER_GET_ALL_SUCCESS: 
+            return {
+                loading: false,
+                orders: action.payload
+            }
+        
+        case ORDER_GET_ALL_FAIL:
+            return {
+                loading: false,
+                error: action.payload
+            }
+        
         default: return state;
     }
 }

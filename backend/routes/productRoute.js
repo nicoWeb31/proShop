@@ -5,6 +5,7 @@ import {
     deleteProduct,
     editProduct,
     createProduct,
+    createReview
 } from '../controllers/productController.js';
 import { protect, admin } from '../middleware/authMiddlware.js';
 
@@ -35,5 +36,10 @@ router
     //@route PATCH /api/products/:id
     //@access Privé/Admin
     .patch(protect, admin, editProduct);
+
+//@desc Create review
+//@route POST/api/products/:id/review
+//@access Privé
+router.route('/:id/review').post(protect,createReview);
 
 export default router;

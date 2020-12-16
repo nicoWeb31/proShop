@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import Product from '../models/productModel.js';
+import Review from '../models/reviewModel.js';
 
 const test = asyncHandler(async (req, res) => {
     res.status(200).json({ message: 'ok' });
@@ -78,7 +79,10 @@ const createProduct = asyncHandler(async (req, res) => {
     });
 
     const createProduct = await product.save();
-    console.log("🚀 ~ file: productController.js ~ line 81 ~ createProduct ~ createProduct", createProduct)
+    console.log(
+        '🚀 ~ file: productController.js ~ line 81 ~ createProduct ~ createProduct',
+        createProduct
+    );
     res.status(201).json({
         status: 'success',
         product: createProduct,
@@ -120,21 +124,64 @@ const editProduct = asyncHandler(async (req, res) => {
     //     throw new Error('Product not found');
     // }
 
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body,{
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
-        runValidators:true
+        runValidators: true,
     });
 
-    if(!product){
+    if (!product) {
         throw new Error('Product not found');
-    }else{
+    } else {
         res.status(201).json({
             status: 'success',
             product,
-        })
+        });
     }
+});
 
+//@desc Create review
+//@route POST/api/products/:id/reviews
+//@access Privé
+//_____________________create new review_______________________________________________
+const createReview = asyncHandler(async (req, res) => {
+    const { rating, comment } = req.body;
+    console.log("🚀 ~ file: productController.js ~ line 148 ~ createReview ~ req.body", req.body)
 
+    const product = await Product.findById(req.params.id);
+
+    if (product) {
+        const alreadyReviewed = product.reviews.find(
+            (r) => r.user.toString() === req.user._id.toString()
+        );
+        if (alreadyReviewed) {
+            res.status(400);
+            throw new Error('Product already reviewed');
+        }
+
+        const review = {
+            name: req.user.name,
+            rating: Number(rating),
+            comment,
+            user: req.user._id,
+            product: product._id
+        };
+
+        const newReview = await Review.create(review);
+
+        // product.reviews.push(review)
+        console.log(product)
+        product.numReviews = 3;
+        // product.rating =
+        //     (product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length) * 1 ;
+        await product.save();
+        res.status(201).json({
+            status: 'success',
+            message: 'review added successfully !!',
+        });
+    } else {
+        res.status(404);
+        throw new Error('Product not found');
+    }
 });
 
 export {
@@ -144,4 +191,5 @@ export {
     deleteProduct,
     createProduct,
     editProduct,
+    createReview,
 };

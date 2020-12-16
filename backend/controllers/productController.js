@@ -145,18 +145,19 @@ const editProduct = asyncHandler(async (req, res) => {
 //_____________________create new review_______________________________________________
 const createReview = asyncHandler(async (req, res) => {
     const { rating, comment } = req.body;
-    console.log("🚀 ~ file: productController.js ~ line 148 ~ createReview ~ req.body", req.body)
 
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id)
+    console.log("🚀 ~ file: productController.js ~ line 151 ~ createReview ~ product", product)
 
-    if (product) {
-        const alreadyReviewed = product.reviews.find(
-            (r) => r.user.toString() === req.user._id.toString()
-        );
-        if (alreadyReviewed) {
-            res.status(400);
-            throw new Error('Product already reviewed');
-        }
+    if (0===0) {
+
+        // const alreadyReviewed = product.reviews.find(
+        //     (r) => r.user.toString() === req.user._id.toString()
+        // );
+        // if (alreadyReviewed) {
+        //     res.status(400);
+        //     throw new Error('Product already reviewed');
+        // }
 
         const review = {
             name: req.user.name,
@@ -165,12 +166,14 @@ const createReview = asyncHandler(async (req, res) => {
             user: req.user._id,
             product: product._id
         };
-
         const newReview = await Review.create(review);
 
+
+        product.reviews.push(newReview._id);
+        
         // product.reviews.push(review)
         console.log(product)
-        product.numReviews = 3;
+        product.numReviews = product.reviews.length;
         // product.rating =
         //     (product.reviews.reduce((acc, review) => acc + review.rating, 0) / product.reviews.length) * 1 ;
         await product.save();

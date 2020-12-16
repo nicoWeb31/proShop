@@ -30,7 +30,7 @@ const productShema = mongoose.Schema(
             require: [true, 'description is required !!!'],
         },
         reviews: [{
-            type: mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.ObjectId,
             ref: 'Review'
         }],
         rating: {

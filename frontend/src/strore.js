@@ -8,7 +8,8 @@ import {
     productDetailsReducer,
     productDeleteReducer,
     productCreateReducer,
-    productEditReducer
+    productEditReducer,
+    ProductCreateReviewReducer
 } from './reducers/productReducer';
 import { cartReducer } from './reducers/cartReducer';
 import {
@@ -48,7 +49,8 @@ const reducer = combineReducers({
     userUpdate:userUpdateReducer,
     productCreate:productCreateReducer,
     productEdit:productEditReducer,
-    orderDelivered:orderDeliveredReducer
+    orderDelivered:orderDeliveredReducer,
+    ProductCreateReview:ProductCreateReviewReducer
 });
 
 //storage state initial with data in storage

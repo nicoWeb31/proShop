@@ -1,4 +1,7 @@
 import {
+    PRODUCT_CREATE_REVIEW_FAILURE,
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_SUCCESS,
     PRODUCT_EDIT_FAILURE,
     PRODUCT_EDIT_REQUEST,
     PRODUCT_EDIT_SUCCESS,
@@ -144,6 +147,35 @@ export const updateProduct = (product) => async (dispatch, getState) => {
         //dispatch des errors
         dispatch({
             type: PRODUCT_EDIT_FAILURE,
+            payload:
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : error.message,
+        });
+    }
+};
+
+export const createReviewProduct = (product) => async (dispatch, getState) => {
+    try {
+        const {
+            userLogin: { userInfo },
+        } = getState();
+
+        dispatch({ type: PRODUCT_CREATE_REVIEW_REQUEST });
+
+        const config = {
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${userInfo.token}`,
+            },
+        };
+        const {data} = await axios.patch(`/api/products/${product._id}`,product,config);
+
+        dispatch({ type: PRODUCT_CREATE_REVIEW_SUCCESS,payload: data.product});
+    } catch (error) {
+        //dispatch des errors
+        dispatch({
+            type: PRODUCT_CREATE_REVIEW_FAILURE,
             payload:
                 error.response && error.response.data.message
                     ? error.response.data.message

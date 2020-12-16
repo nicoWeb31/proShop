@@ -1,4 +1,8 @@
 import {
+    PRODUCT_CREATE_REVIEW_FAILURE,
+    PRODUCT_CREATE_REVIEW_REQUEST,
+    PRODUCT_CREATE_REVIEW_RESET,
+    PRODUCT_CREATE_REVIEW_SUCCESS,
     PRODUCT_EDIT_FAILURE,
     PRODUCT_EDIT_RESET,
     PRODUCT_EDIT_SUCCESS,
@@ -144,6 +148,33 @@ export const productEditReducer = (state = {product:{}}, action) => {
             };
         }
         case PRODUCT_EDIT_RESET:
+            return {product:{}};
+        default: {
+            return state;
+        }
+    }
+};
+
+
+export const ProductCreateReviewReducer = (state = {}, action) => {
+    switch (action.type) {
+        case PRODUCT_CREATE_REVIEW_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case PRODUCT_CREATE_REVIEW_SUCCESS:
+            return {
+                loading: false,
+                success: true,
+            };
+        case PRODUCT_CREATE_REVIEW_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
+        case PRODUCT_CREATE_REVIEW_RESET:
             return {product:{}};
         default: {
             return state;

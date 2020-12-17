@@ -9,6 +9,9 @@ import {
     PRODUCT_LIST_FAILURE,
     PRODUCT_LIST_REQUEST,
     PRODUCT_LIST_SUCCESS,
+    PRODUCT_PRODUCT_TOP_FAILURE,
+    PRODUCT_PRODUCT_TOP_REQUEST,
+    PRODUCT_PRODUCT_TOP_SUCCESS,
 } from '../constants/productConstants.js';
 import {
     PRODUCT_DETAILS_FAILURE,
@@ -178,6 +181,32 @@ export const ProductCreateReviewReducer = (state = {}, action) => {
         }
         case PRODUCT_CREATE_REVIEW_RESET:
             return {product:{}};
+        default: {
+            return state;
+        }
+    }
+};
+
+
+
+export const ProductTopRatedReducer = (state = {productsTop: []}, action) => {
+    switch (action.type) {
+        case PRODUCT_PRODUCT_TOP_REQUEST:
+            return {
+                loading: true,
+            };
+
+        case PRODUCT_PRODUCT_TOP_SUCCESS:
+            return {
+                loading: false,
+                productsTop: action.payload,
+            };
+        case PRODUCT_PRODUCT_TOP_FAILURE: {
+            return {
+                loading: false,
+                error: action.payload,
+            };
+        }
         default: {
             return state;
         }

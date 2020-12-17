@@ -201,6 +201,21 @@ const createReview = asyncHandler(async (req, res) => {
     }
 });
 
+// @desc    Top product
+// @route   Get /api/products/top
+// @access  public
+const topProduct = asyncHandler(async (req, res) => {
+
+    const topProduc = await Products.find({}).sort({rating:-1}).limit(3)
+
+    res.status(200).json({
+        status: 'success',
+        topProduct
+    })
+
+
+});
+
 export {
     fetchOneProduct,
     fetchAllPoducts,
@@ -209,4 +224,5 @@ export {
     createProduct,
     editProduct,
     createReview,
+    topProduct
 };

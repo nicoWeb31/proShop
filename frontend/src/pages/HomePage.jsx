@@ -6,7 +6,11 @@ import { listPoducts } from '../actions/productsAction.js';
 import Loader from '../components/Loader';
 import Message from '../components/Message'
 
-const HomePage = () => {
+const HomePage = ({ match}) => {
+
+
+    const keyword = match.params.keyword;
+
     //methode sans connect
     const dispatch = useDispatch();
     const { loading, error, products } = useSelector(
@@ -14,8 +18,8 @@ const HomePage = () => {
     );
 
     useEffect(() => {
-        dispatch(listPoducts());
-    }, [dispatch]);
+        dispatch(listPoducts(keyword));
+    }, [dispatch,keyword]);
 
     return (
         <>

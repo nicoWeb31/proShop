@@ -24,11 +24,11 @@ import {
 
 import axios from 'axios';
 
-export const listPoducts = () => async (dispatch) => {
+export const listPoducts = (keyword='') => async (dispatch) => {
     try {
         //on dispatch la request pour le loading par exemple
         dispatch({ type: PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get('/api/products');
+        const { data } = await axios.get(`/api/products?keyword=${keyword}`);
         console.log(
             '🚀 ~ file: productsAction.js ~ line 19 ~ listPoducts ~ data',
             data

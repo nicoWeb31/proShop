@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Carousel, Col, Row } from 'react-bootstrap';
+import { Col, Row } from 'react-bootstrap';
 import Product from '../components/Product';
 import { useDispatch, useSelector } from 'react-redux';
 import { listPoducts } from '../actions/productsAction.js';
@@ -7,6 +7,7 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import ProductCarroussel from '../components/ProductCarroussel';
+import Meta from '../components/Meta';
 
 const HomePage = ({ match }) => {
 
@@ -27,6 +28,8 @@ const HomePage = ({ match }) => {
     return (
         
         <>
+        <Meta/>
+
             {!keyword && <ProductCarroussel/> }
             <h1>Latest products</h1>
             {/* spinner */}

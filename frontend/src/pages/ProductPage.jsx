@@ -19,7 +19,7 @@ import {
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { PRODUCT_CREATE_REVIEW_RESET } from '../constants/productConstants';
-
+import Meta from '../components/Meta';
 
 //______________________________________________________________
 const ProductPage = ({ match, history }) => {
@@ -64,6 +64,7 @@ const ProductPage = ({ match, history }) => {
 
     return (
         <>
+        <Meta title={product.name}></Meta>
             <Link to="/" className="btn btn-white my-3">
                 Back
             </Link>

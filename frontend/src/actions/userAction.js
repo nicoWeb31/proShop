@@ -21,9 +21,9 @@ import {
     USER_DELETE_FAIL,
     USER_UPDATE_REQUEST,
     USER_UPDATE_SUCCESS,
-    USER_UPDATE_FAIL
+    USER_UPDATE_FAIL,
 } from '../constants/userConstant';
-import {ORDER_OWN_LIST_RESET} from '../constants/orderConstants'
+import { ORDER_OWN_LIST_RESET } from '../constants/orderConstants';
 import axios from 'axios';
 
 export const login = (email, password) => async (dispatch) => {
@@ -135,11 +135,13 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.put(`/api/users/profile`,user, config);
+        const { data } = await axios.put(`/api/users/profile`, user, config);
         dispatch({
             type: USER_UPDATE_PROFILE_SUCCESS,
             payload: data.user,
         });
+        dispatch({ type: USER_LOGIN_SUCCESS, payload: data.user });
+        localStorage.setItem('userInfo',JSON.stringify(data.user));
     } catch (error) {
         //dispatch des errors
         dispatch({
@@ -166,7 +168,7 @@ export const getAllUserForAdmin = () => async (dispatch, getState) => {
             },
         };
 
-        const { data } = await axios.get(`/api/users`,config);
+        const { data } = await axios.get(`/api/users`, config);
         dispatch({
             type: USER_LIST_SUCCESS,
             payload: data.users,
@@ -183,7 +185,6 @@ export const getAllUserForAdmin = () => async (dispatch, getState) => {
     }
 };
 
-
 export const deletUserForAdmin = (id) => async (dispatch, getState) => {
     try {
         const {
@@ -198,7 +199,7 @@ export const deletUserForAdmin = (id) => async (dispatch, getState) => {
             },
         };
 
-        await axios.delete(`/api/users/${id}`,config);
+        await axios.delete(`/api/users/${id}`, config);
         dispatch({
             type: USER_DELETE_SUCCESS,
         });
@@ -229,12 +230,16 @@ export const updateUserForAdmin = (user) => async (dispatch, getState) => {
             },
         };
 
-        const {data} = await axios.put(`/api/users/${user._id}`,user,config);
+        const { data } = await axios.put(
+            `/api/users/${user._id}`,
+            user,
+            config
+        );
         dispatch({
             type: USER_UPDATE_SUCCESS,
         });
         //dispatch aussi le details user update
-        dispatch({type: USER_DETAIL_SUCCESS, payload : data.user })
+        dispatch({ type: USER_DETAIL_SUCCESS, payload: data.user });
     } catch (error) {
         //dispatch des errors
         dispatch({
@@ -250,8 +255,7 @@ export const updateUserForAdmin = (user) => async (dispatch, getState) => {
 export const logout = () => (dispatch) => {
     localStorage.removeItem('userInfo');
     dispatch({ type: USER_LOGOUT });
-    dispatch({type: USER_DETAIL_RESET})
-    dispatch({type: ORDER_OWN_LIST_RESET})
-    dispatch({type : USER_DETAIL_RESET})
-
+    dispatch({ type: USER_DETAIL_RESET });
+    dispatch({ type: ORDER_OWN_LIST_RESET });
+    dispatch({ type: USER_DETAIL_RESET });
 };

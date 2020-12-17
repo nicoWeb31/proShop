@@ -9,6 +9,7 @@ import Loader from '../components/Loader';
 //action
 import { getUserDetails, updateUserProfile } from '../actions/userAction';
 import { ListOwnOrder } from '../actions/orderAction';
+import {USER_UPDATE_PROFILE_RESEST} from '../constants/userConstant'
 
 const ProfilePage = ({ location, history }) => {
     const [email, setEmail] = useState('');
@@ -35,7 +36,8 @@ const ProfilePage = ({ location, history }) => {
         if (!userInfo) {
             history.push('/login');
         } else {
-            if (!user.name) {
+            if (!user.name || success) {
+                dispatch({ type: USER_UPDATE_PROFILE_RESEST})
                 dispatch(getUserDetails('profile'));
                 dispatch(ListOwnOrder());
             } else {
@@ -43,7 +45,7 @@ const ProfilePage = ({ location, history }) => {
                 setEmail(user.email);
             }
         }
-    }, [dispatch, history, userInfo, user]);
+    }, [dispatch, history, userInfo, user,success]);
 
     //______________fonction____________________
     const submitHandler = (e) => {

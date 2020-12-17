@@ -8,6 +8,7 @@ import Message from '../components/Message';
 import Paginate from '../components/Paginate';
 import ProductCarroussel from '../components/ProductCarroussel';
 import Meta from '../components/Meta';
+import {Link} from 'react-router-dom';
 
 const HomePage = ({ match }) => {
 
@@ -30,7 +31,9 @@ const HomePage = ({ match }) => {
         <>
         <Meta/>
 
-            {!keyword && <ProductCarroussel/> }
+            {!keyword ? <ProductCarroussel/> :(
+                <Link to='/' className='btn btn-light'> Go back !</Link>
+            ) }
             <h1>Latest products</h1>
             {/* spinner */}
             {loading ? (

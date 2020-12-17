@@ -193,6 +193,7 @@ export const listTopPoducts = () => async (dispatch) => {
         
         dispatch({ type: PRODUCT_PRODUCT_TOP_REQUEST });
         const { data } = await axios.get(`/api/products/top`);
+        console.log("🚀 ~ file: productsAction.js ~ line 196 ~ listTopPoducts ~ data", data)
 
         dispatch({ type: PRODUCT_PRODUCT_TOP_SUCCESS, payload: data.topProduct });
     } catch (error) {

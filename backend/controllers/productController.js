@@ -206,7 +206,8 @@ const createReview = asyncHandler(async (req, res) => {
 // @access  public
 const topProduct = asyncHandler(async (req, res) => {
 
-    const topProduc = await Products.find({}).sort({rating:-1}).limit(3)
+    const topProduct = await Product.find({}).sort({rating:-1}).limit(3)
+    console.log("🚀 ~ file: productController.js ~ line 210 ~ topProduct ~ topProduct", topProduct)
 
     res.status(200).json({
         status: 'success',

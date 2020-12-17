@@ -12,6 +12,11 @@ import { protect, admin } from '../middleware/authMiddlware.js';
 
 const router = express.Router();
 
+// @desc    Top product
+// @route   Get /api/products/top
+// @access  public
+router.route('/top').get(topProduct)
+
 router
     .route('/')
     //@desc Fetch all products
@@ -43,10 +48,7 @@ router
 //@access Privé
 router.route('/:id/review').post(protect,createReview);
 
-// @desc    Top product
-// @route   Get /api/products/top
-// @access  public
-router.route('/top').get(topProduct)
+
 
 
 export default router;

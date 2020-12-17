@@ -4,22 +4,24 @@ import Product from '../components/Product';
 import { useDispatch, useSelector } from 'react-redux';
 import { listPoducts } from '../actions/productsAction.js';
 import Loader from '../components/Loader';
-import Message from '../components/Message'
+import Message from '../components/Message';
+import Paginate from '../components/Paginate';
 
-const HomePage = ({ match}) => {
+const HomePage = ({ match }) => {
 
 
     const keyword = match.params.keyword;
+    const pageNumber = match.params.pageNumber || 1;
 
     //methode sans connect
     const dispatch = useDispatch();
-    const { loading, error, products } = useSelector(
+    const { loading, error, products, pages, page } = useSelector(
         (state) => state.productList
     );
 
     useEffect(() => {
-        dispatch(listPoducts(keyword));
-    }, [dispatch,keyword]);
+        dispatch(listPoducts(keyword,pageNumber));
+    }, [dispatch,keyword,pageNumber]);
 
     return (
         <>
@@ -32,6 +34,7 @@ const HomePage = ({ match}) => {
                 {error}
                 </Message>
             ) : (
+                <>
                 <Row>
                     {products &&
                         products.map((prod) => (
@@ -40,6 +43,8 @@ const HomePage = ({ match}) => {
                             </Col>
                         ))}
                 </Row>
+                <Paginate pages={pages} page={page} keyword={keyword ? keyword: ''} />
+                </>
             )}
         </>
     );

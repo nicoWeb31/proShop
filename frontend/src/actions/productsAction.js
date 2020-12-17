@@ -24,17 +24,17 @@ import {
 
 import axios from 'axios';
 
-export const listPoducts = (keyword='') => async (dispatch) => {
+export const listPoducts = (keyword='',pageNumber ='') => async (dispatch) => {
     try {
         //on dispatch la request pour le loading par exemple
         dispatch({ type: PRODUCT_LIST_REQUEST });
-        const { data } = await axios.get(`/api/products?keyword=${keyword}`);
+        const { data } = await axios.get(`/api/products?keyword=${keyword}&pageNumber=${pageNumber}`);
         console.log(
             '🚀 ~ file: productsAction.js ~ line 19 ~ listPoducts ~ data',
             data
         );
         //on dispatch les datas.. stop loading and display the data
-        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data.products });
+        dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
     } catch (error) {
         //dispatch des errors
         dispatch({

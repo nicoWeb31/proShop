@@ -12,6 +12,13 @@ const test = asyncHandler(async (req, res) => {
 //_____________________fetch All Products_____________________________________
 const fetchAllPoducts = asyncHandler(async (req, res) => {
 
+
+    const pageSize = 3;
+    const page = req.query.pageNumber * 1 || 1;
+    console.log("🚀 ~ file: productController.js ~ line 18 ~ fetchAllPoducts ~ req.query.pageNumber", req.query)
+
+
+
     const keyword = req.query.keyword ? {
         name: {
             $regex: req.query.keyword,
@@ -19,11 +26,15 @@ const fetchAllPoducts = asyncHandler(async (req, res) => {
         }
     }:{}
 
-    const products = await Product.find({...keyword});
+    const count = await Product.countDocuments({...keyword})
+
+    const products = await Product.find({...keyword}).limit(pageSize).skip(pageSize *(page-1));
 
     res.status(200).json({
         status: 'success',
         products,
+        page,
+        pages: Math.ceil(count / pageSize)
     });
 });
 
